@@ -1,15 +1,13 @@
 package cat.deim.asm_32.patinfly.domain.models
 
-import java.util.UUID
-
+import java.util.Date
 data class Bike(
     val uuid: String,
     val name: String,
     val type: BikeType,
-    val creationDate: String,
+    val creationDate: Date,
     val lastMaintenanceDate: String,
-    val isAvailable: Boolean,
+    val isActive: Boolean,
     val batteryLvl: Double,
-    val distance: Double
+    val meters: Int
 )
-
