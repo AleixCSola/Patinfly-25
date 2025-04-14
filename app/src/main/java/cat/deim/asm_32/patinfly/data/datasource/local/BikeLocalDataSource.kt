@@ -27,7 +27,7 @@ class BikeLocalDataSource private constructor():IBikeDataSource {
     private var context:Context?=null
     fun loadBikeData() {
         try {
-            context?.assets?.open("user.json").use { inputStream ->
+            context?.assets?.open("bikes.json").use { inputStream ->
                 InputStreamReader(inputStream).use { reader ->
                     val json = reader.readText()
                     bicis = parseJson(json)?.toMutableList()?: mutableListOf()

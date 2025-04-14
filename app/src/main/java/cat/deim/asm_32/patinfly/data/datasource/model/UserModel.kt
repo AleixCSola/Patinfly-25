@@ -1,15 +1,20 @@
 package cat.deim.asm_32.patinfly.data.datasource.model
 
 import cat.deim.asm_32.patinfly.domain.models.User
+import com.google.gson.annotations.SerializedName
 import java.util.*
 
 data class UserModel(
     val uuid: String,
     val name: String,
     val email: String,
+    @SerializedName("hashed_password")
     val hashedPassword: String,
+    @SerializedName("creation_date")
     val creationDate: Date,
+    @SerializedName("last_connection")
     val lastConnection: Date,
+    @SerializedName("device_id")
     val deviceId: String
 ){
     fun toDomain(): User=User(

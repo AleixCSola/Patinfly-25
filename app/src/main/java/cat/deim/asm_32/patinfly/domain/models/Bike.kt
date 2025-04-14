@@ -6,8 +6,8 @@ data class Bike(
     val name: String,
     val type: BikeType,
     val creationDate: Date,
-    val lastMaintenanceDate: String,
-    val isActive: Boolean,
-    val batteryLvl: Double,
-    val meters: Int
+    val lastMaintenanceDate: Date,
+    val isActive: Boolean=false,
+    val batteryLvl: Double =100.0,
+    val meters: Int=0
 )

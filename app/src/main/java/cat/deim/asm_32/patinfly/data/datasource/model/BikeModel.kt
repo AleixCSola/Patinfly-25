@@ -8,7 +8,7 @@ data class BikeModel(
     val name: String,
     val type: BikeTypeModel,
     val creationDate: Date,
-    val lastMaintenanceDate: String,
+    val lastMaintenanceDate: Date,
     val isActive: Boolean,
     val batteryLvl: Double,
     val meters: Int
@@ -23,7 +23,6 @@ data class BikeModel(
         batteryLvl=this.batteryLvl,
         meters=this.meters
     )
-
     companion object{
         fun fromDomain(bike: Bike): BikeModel=BikeModel(
             uuid=bike.uuid,

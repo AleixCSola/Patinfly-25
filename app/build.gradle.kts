@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+
     namespace = "cat.deim.asm_32.patinfly"
     compileSdk = 35
 
@@ -48,6 +49,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -56,5 +60,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("androidx.compose.material3:material3:1.1.2")
+    implementation ("androidx.activity:activity-compose:1.8.0")
 
 }
