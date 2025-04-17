@@ -1,30 +1,77 @@
 package cat.deim.asm_32.patinfly.presentation.profile
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import cat.deim.asm_32.patinfly.R
 import cat.deim.asm_32.patinfly.data.datasource.model.UserModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(user: UserModel) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        Text("User Profile", style = MaterialTheme.typography.headlineMedium)
-        Text("Name: ${user.name}")
-        Text("Email: ${user.email}")
-        Text("UUID: ${user.uuid}")
-        Text("Device ID: ${user.deviceId}")
-        Text("Created: ${user.creationDate}")
-        Text("Last Connection: ${user.lastConnection}")
+    val context = LocalContext.current
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Patinfly") },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        ActivityCompat.finishAfterTransition(context as ComponentActivity)
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_back),
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text("User Profile", style = MaterialTheme.typography.headlineMedium)
+
+                    Row(
+                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Column {
+                            Text(user.name, style = MaterialTheme.typography.bodyLarge)
+                            Text(user.email, style = MaterialTheme.typography.bodySmall)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("UUID: ${user.uuid}")
+                    Text("Device ID: ${user.deviceId}")
+                    Text("Created: ${user.creationDate}")
+                    Text("Last Connection: ${user.lastConnection}")
+                }
+            }
+        }
     }
 }
