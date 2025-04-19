@@ -3,7 +3,6 @@ package cat.deim.asm_32.patinfly.presentation.profile
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Text
 import cat.deim.asm_32.patinfly.data.datasource.local.UserLocalDataSource
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
 
@@ -18,7 +17,7 @@ class ProfileActivity : ComponentActivity() {
             PatinflyTheme {
                 user?.let {
                     ProfileScreen(user = it)
-                } ?: Text("No user data found")
+                }
             }
         }
     }

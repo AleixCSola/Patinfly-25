@@ -18,10 +18,10 @@ import cat.deim.asm_32.patinfly.data.repository.UserRepository
 
 
 @Composable
-fun UserLoginForm(loginUseCase: LoginUseCase) {
+fun LoginScreen(loginUseCase: LoginUseCase) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var Error by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     Surface(
@@ -54,14 +54,14 @@ fun UserLoginForm(loginUseCase: LoginUseCase) {
                         val success = loginUseCase.execute(email, password)
                         if (success) {
                             val intent = Intent(context, MainActivity::class.java).apply {
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                             }
                             context.startActivity(intent)
                         } else {
-                            Error = true
+                            error = true
                         }
                     } catch (e: Exception) {
-                        Error = true
+                        error = true
                         Log.e("LOGIN", "Error", e)
                     }
                 },
@@ -70,7 +70,7 @@ fun UserLoginForm(loginUseCase: LoginUseCase) {
             ) {
                 Text("Login")
             }
-            if (Error) {
+            if (error) {
                 Text(
                     text = "Email o contraseña incorrectos",
                     color = MaterialTheme.colorScheme.error,
@@ -84,7 +84,7 @@ fun UserLoginForm(loginUseCase: LoginUseCase) {
 @Composable
 fun PreviewUserLoginForm() {
     val context = LocalContext.current
-    UserLoginForm(
+    LoginScreen(
         loginUseCase = LoginUseCase(
             UserRepository(
                 UserLocalDataSource.getInstance(context)

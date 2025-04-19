@@ -20,7 +20,7 @@ class LoginActivity : ComponentActivity() {
                         UserLocalDataSource.getInstance(context)
                     )
                 )
-                UserLoginForm(loginUseCase = loginUseCase)
+                LoginScreen(loginUseCase = loginUseCase)
             }
         }
     }

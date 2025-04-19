@@ -5,7 +5,7 @@ import android.content.Context
 import cat.deim.asm_32.patinfly.data.datasource.IBikeDataSource
 import cat.deim.asm_32.patinfly.data.datasource.model.BikeModel
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonSyntaxException
+import com.google.gson.annotations.SerializedName
 import java.io.IOException
 import java.io.InputStreamReader
 
@@ -38,10 +38,17 @@ class BikeLocalDataSource private constructor():IBikeDataSource {
         }
     }
     private fun parseJson(json: String): List<BikeModel>? {
-        val gson= GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssz").create()
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .create()
+
         return try {
-            gson.fromJson(json, Array<BikeModel>::class.java).toList()
-        }catch (e: JsonSyntaxException){
+            data class BikeListResponse(
+                @SerializedName("bike") val bikes: List<BikeModel>?
+            )
+            val response = gson.fromJson(json, BikeListResponse::class.java)
+            response.bikes ?: emptyList()
+        } catch (e: Exception) {
             e.printStackTrace()
             null
         }
