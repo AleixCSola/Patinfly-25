@@ -16,7 +16,7 @@ class ProfileActivity : ComponentActivity() {
         setContent {
             PatinflyTheme {
                 user?.let {
-                    ProfileScreen(user = it)
+                    ProfileScreen(usuari = it)
                 }
             }
         }
