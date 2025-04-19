@@ -39,26 +39,65 @@ import androidx.compose.ui.res.painterResource
 import cat.deim.asm_32.patinfly.R
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BikeListScreen(viewModel: BikeViewModel) {
+fun BikeListScreen(
+    viewModel: BikeViewModel,
+    onProfileClick: () -> Unit,
+    onBackClick: () -> Unit
+) {
     val bicis by viewModel.bikes.collectAsState()
     var actual by remember { mutableStateOf<Bike?>(null) }
 
-    if (actual != null) {
-        BikeDetailScreen(
-            bike = actual!!,
-            onBackClick = { actual = null }
-        )
-    } else {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(16.dp)
-        ) {
-            items(bicis) { bike ->
-                EachBike(
-                    bici = bike,
-                    onDetailsClick = { actual = bike }
-                )
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = if (actual == null) "Llistat de bicis" else "Detalls bici"
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_back),
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+                ,
+                actions = {
+                    IconButton(onClick = onProfileClick) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_profile),
+                            contentDescription = "Perfil"
+                        )
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        if (actual != null) {
+            BikeDetailScreen(
+                bike = actual!!,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp)
+            )
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                items(bicis) { bike ->
+                    EachBike(
+                        bici = bike,
+                        onDetailsClick = { actual = bike }
+                    )
+                }
             }
         }
     }
@@ -108,57 +147,39 @@ fun EachBike(bici: Bike, onDetailsClick: () -> Unit = {}) {
         }
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun BikeDetailScreen(
-    bike: Bike,
-    onBackClick: () -> Unit
-) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Back") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = ""
-                        )
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp)
-        ) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(8.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(
-                        text = bike.name,
-                        style = MaterialTheme.typography.headlineLarge,
-                        fontWeight = FontWeight.Bold
-                    )
 
-                    HorizontalDivider()
-                    Detalles("ID:", bike.uuid)
-                    Detalles("Tipo:", bike.type.name)
-                    Detalles("Bateria:", "${bike.batteryLvl.toInt()}%")
-                    Detalles("Distancia:", "${bike.meters}m")
-                }
+@Composable
+fun BikeDetailScreen(
+    bike: Bike,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = bike.name,
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold
+                )
+
+                HorizontalDivider()
+                Detalles("ID:", bike.uuid)
+                Detalles("Tipo:", bike.type.name)
+                Detalles("Bateria:", "${bike.batteryLvl.toInt()}%")
+                Detalles("Distancia:", "${bike.meters}m")
             }
         }
     }
 }
+
 @Composable
 private fun Detalles(texto: String, valor: String) {
     Row(

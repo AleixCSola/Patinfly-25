@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import cat.deim.asm_32.patinfly.data.datasource.local.BikeLocalDataSource
@@ -27,10 +28,16 @@ class BikeListActivity : ComponentActivity() {
 
         setContent {
             PatinflyTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    BikeListScreen(viewModel)
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    BikeListScreen(
+                        viewModel = viewModel,
+                        onProfileClick = {
+                            startActivity(Intent(this, cat.deim.asm_32.patinfly.presentation.profile.ProfileActivity::class.java))
+                        },
+                        onBackClick = {
+                            finish()
+                        }
+                    )
                 }
             }
         }
