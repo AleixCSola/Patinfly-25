@@ -14,6 +14,8 @@ import cat.deim.asm_32.patinfly.data.datasource.local.BikeLocalDataSource
 import cat.deim.asm_32.patinfly.data.repository.BikeRepository
 import cat.deim.asm_32.patinfly.domain.usecase.BikeListUseCase
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
+import cat.deim.asm_32.patinfly.presentation.profile.ProfileActivity
+
 
 class BikeListActivity : ComponentActivity() {
 
@@ -44,7 +46,7 @@ class BikeListActivity : ComponentActivity() {
                     BikeListScreen(
                         viewModel = viewModel,
                         onProfileClick = {
-                            startActivity(Intent(this, cat.deim.asm_32.patinfly.presentation.profile.ProfileActivity::class.java))
+                            startActivity(Intent(this, ProfileActivity::class.java))
                         },
                         onBackClick = {
                             finish()
