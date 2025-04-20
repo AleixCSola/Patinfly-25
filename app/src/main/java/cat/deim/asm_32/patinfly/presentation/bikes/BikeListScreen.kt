@@ -38,7 +38,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import cat.deim.asm_32.patinfly.R
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BikeListScreen(

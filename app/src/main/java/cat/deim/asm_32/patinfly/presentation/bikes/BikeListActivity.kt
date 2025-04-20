@@ -1,6 +1,7 @@
 package cat.deim.asm_32.patinfly.presentation.bikes
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,16 +16,27 @@ import cat.deim.asm_32.patinfly.domain.usecase.BikeListUseCase
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
 
 class BikeListActivity : ComponentActivity() {
+
+    private val TAG = BikeListActivity::class.java.simpleName
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.d(TAG, "BikeListActivity onCreate")
+
         val dataSource = BikeLocalDataSource.getInstance(applicationContext)
         val repository = BikeRepository(dataSource)
         val useCase = BikeListUseCase(repository)
+
+        Log.d(TAG, "Creant viewModel Bike...")
+
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return BikeViewModel(useCase) as T
             }
         })[BikeViewModel::class.java]
+
+        Log.d(TAG,"Before setContent Execution")
 
         setContent {
             PatinflyTheme {
@@ -41,5 +53,6 @@ class BikeListActivity : ComponentActivity() {
                 }
             }
         }
+        Log.d(TAG, "After setContent Execution")
     }
 }
