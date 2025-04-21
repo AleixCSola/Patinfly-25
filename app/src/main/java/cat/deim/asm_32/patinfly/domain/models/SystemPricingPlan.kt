@@ -1,6 +1,5 @@
 package cat.deim.asm_32.patinfly.domain.models
 
-import org.intellij.lang.annotations.Language
 
 data class SystemPricingPlan(
     val lastUpdated: String,
@@ -21,7 +20,7 @@ data class Information(
 )
 data class TextType(
     val text: String,
-    val language: Language
+    val language: String
 )
 data class PerKmPricing(
     val start: Double,

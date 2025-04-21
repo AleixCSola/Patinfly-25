@@ -15,6 +15,9 @@ class UserRepository (private val userDataSource: IUserDataSource):IUserReposito
     override fun updateUser(user: User): User? {
         return userDataSource.update(UserModel.fromDomain(user))?.toDomain()
     }
+    override fun getById(uuid: String): User? {
+        return userDataSource.getById(uuid)?.toDomain()
+    }
     override fun deleteUser(uuid:String): User? {
         return userDataSource.deleteUser(uuid)?.toDomain()
     }

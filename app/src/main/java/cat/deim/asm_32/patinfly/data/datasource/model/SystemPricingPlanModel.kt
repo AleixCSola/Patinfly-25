@@ -1,6 +1,5 @@
 package cat.deim.asm_32.patinfly.data.datasource.model
 
-import org.intellij.lang.annotations.Language
 import cat.deim.asm_32.patinfly.domain.models.*
 
 data class SystemPricingPlanModel(
@@ -59,7 +58,7 @@ data class InformationModel(
 }
 data class TextTypeModel(
     val text: String,
-    val language: Language
+    val language: String
 ){
     fun toDomain(): TextType = TextType(
         text = this.text,

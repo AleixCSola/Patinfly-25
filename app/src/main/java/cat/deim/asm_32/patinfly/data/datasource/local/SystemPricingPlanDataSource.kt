@@ -52,17 +52,8 @@ class SystemPricingPlanDataSource private constructor(): ISystemPricingPlanDataS
         pricingPlan=plan
         return true
     }
-    override fun insertOrUpdate(plan: SystemPricingPlanModel): Boolean {
-        return if(pricingPlan==null){
-            insert(plan)
-        }
-        else{
-            update(plan)!=null
-        }
-    }
     override fun getById(planId: String): SystemPricingPlanModel? {
-
-        return TODO("Provide the return value")
+        return pricingPlan?.takeIf { it.dataPlan.planId == planId }
     }
 
     override fun update(plan: SystemPricingPlanModel): SystemPricingPlanModel? {
@@ -71,25 +62,12 @@ class SystemPricingPlanDataSource private constructor(): ISystemPricingPlanDataS
         return antic
     }
 
-    override fun delete(planId: String): SystemPricingPlanModel? {
-
-        return TODO("Provide the return value")
+    override fun delete(planId: String): Boolean {
+        return if (pricingPlan?.dataPlan?.planId == planId) {
+            pricingPlan = null
+            true
+        } else {
+            false
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
