@@ -15,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cat.deim.asm_32.patinfly.presentation.login.LoginActivity
-
 import kotlinx.coroutines.delay
+import cat.deim.asm_32.patinfly.ui.theme.Nunito
+
 
 @Composable
 fun SplashScreen() {
@@ -34,7 +36,10 @@ fun SplashScreen() {
         ) {
             Text(
                 text = "Patinfly",
-                style = MaterialTheme.typography.displayLarge,
+                style = MaterialTheme.typography.displayLarge.copy(
+                    fontFamily = Nunito,
+                    fontWeight = FontWeight.Bold
+                ),
                 color = MaterialTheme.colorScheme.onPrimary
             )
             Spacer(modifier = Modifier.height(16.dp))

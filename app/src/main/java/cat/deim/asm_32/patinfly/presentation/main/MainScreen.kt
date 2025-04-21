@@ -13,6 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import cat.deim.asm_32.patinfly.ui.theme.Nunito
+
 
 @Composable
 fun MainScreen(
@@ -28,8 +38,22 @@ fun MainScreen(
     ) {
         Text(
             text = "Patinfly",
-            modifier = Modifier.padding(bottom = 32.dp)
+            style = MaterialTheme.typography.displayLarge.copy(
+                fontFamily = Nunito,
+                fontWeight = FontWeight.Bold
+            ),
+            color = MaterialTheme.colorScheme.primary
         )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Image(
+            painter = painterResource(id = cat.deim.asm_32.patinfly.R.drawable.bike_splash_screen),
+            contentDescription = "Logo Patinfly",
+            modifier = Modifier
+                .height(360.dp)
+                .clip(RoundedCornerShape(24.dp))
+        )
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = perfilClick,
