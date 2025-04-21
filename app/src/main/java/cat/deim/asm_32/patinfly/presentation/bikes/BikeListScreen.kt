@@ -60,7 +60,13 @@ fun BikeListScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = {
+                        if (actual != null) {
+                            actual = null
+                        } else {
+                            onBackClick()
+                        }
+                    }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
                             contentDescription = "Back"
