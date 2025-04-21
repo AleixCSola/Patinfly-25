@@ -1,5 +1,6 @@
 package cat.deim.asm_32.patinfly.presentation.bikes
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -35,6 +37,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import cat.deim.asm_32.patinfly.R
 
@@ -112,6 +115,16 @@ fun EachBike(bici: Bike, onDetailsClick: () -> Unit = {}) {
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
+            Image(
+                painter = painterResource(id = R.drawable.bike_card),
+                contentDescription = "Imagen de la bici",
+                modifier = Modifier
+                    .height(250.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(36.dp))
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -130,18 +143,19 @@ fun EachBike(bici: Bike, onDetailsClick: () -> Unit = {}) {
             Text(text = "Bateria: ${bici.batteryLvl.toInt()}%")
             Text(text = "Distancia: ${bici.meters}m")
             Text(text = "Tipo: ${bici.type.name}")
-        }
-        if (bici.isActive) {
-            Spacer(modifier = Modifier.height(12.dp))
-            Button(
-                onClick = onDetailsClick,
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                Text("Veure detalls", color = Color.White)
+
+            if (bici.isActive) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Button(
+                    onClick = onDetailsClick,
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    Text("Veure detalls", color = Color.White)
+                }
             }
         }
     }
