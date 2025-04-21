@@ -22,7 +22,7 @@ fun ProfileScreen(usuari: UserModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Back") },
+                title = { Text("Perfil") },
                 navigationIcon = {
                     IconButton(onClick = {
                         ActivityCompat.finishAfterTransition(context as ComponentActivity)
@@ -49,27 +49,40 @@ fun ProfileScreen(usuari: UserModel) {
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
                 ) {
-                    Text("Perfil", style = MaterialTheme.typography.headlineMedium)
-
-                    Row(
-                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        Column {
-                            Text(usuari.name, style = MaterialTheme.typography.bodyLarge)
-                            Text(usuari.email, style = MaterialTheme.typography.bodySmall)
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("UUID: ${usuari.uuid}")
-                    Text("Device ID: ${usuari.deviceId}")
-                    Text("Created: ${usuari.creationDate}")
-                    Text("Last Connection: ${usuari.lastConnection}")
+                    Spacer(modifier = Modifier.width(2.dp))
+                    Text(
+                        text = usuari.name,
+                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
+                    )
+                    Text(
+                        text = usuari.email,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    HorizontalDivider()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    DetallesText("UUID:", usuari.uuid)
+                    DetallesText("Device ID:", usuari.deviceId)
+                    DetallesText("Created:", usuari.creationDate.toString())
+                    DetallesText("Last Connection:", usuari.lastConnection.toString())
                 }
             }
         }
+    }
+}
+
+@Composable
+fun DetallesText(label: String, value: String) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = label,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(text = value)
     }
 }

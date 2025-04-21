@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -130,7 +130,6 @@ fun EachBike(bici: Bike, onDetailsClick: () -> Unit = {}) {
                     .clip(RoundedCornerShape(36.dp))
             )
             Spacer(modifier = Modifier.height(12.dp))
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -183,12 +182,25 @@ fun BikeDetailScreen(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
-                    text = bike.name,
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Bold
-                )
+                Row(
+                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.bike_card),
+                        contentDescription = "Foto de la bici",
+                        modifier = Modifier
+                            .size(64.dp)
+                            .clip(RoundedCornerShape(32.dp))
+                    )
 
+                    Text(
+                        text = bike.name,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
                 HorizontalDivider()
                 Detalles("ID:", bike.uuid)
                 Detalles("Tipo:", bike.type.name)
@@ -198,6 +210,7 @@ fun BikeDetailScreen(
         }
     }
 }
+
 
 @Composable
 private fun Detalles(texto: String, valor: String) {
