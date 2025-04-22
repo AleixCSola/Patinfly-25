@@ -8,7 +8,7 @@ import cat.deim.asm_32.patinfly.domain.models.Bike
 import cat.deim.asm_32.patinfly.domain.usecase.BikeListUseCase
 import kotlinx.coroutines.launch
 
-class BikeViewModel(
+class BikeListViewModel(
     private val useCase: BikeListUseCase
 ) : ViewModel() {
 

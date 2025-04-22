@@ -33,9 +33,9 @@ class BikeListActivity : ComponentActivity() {
 
         val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return BikeViewModel(useCase) as T
+                return BikeListViewModel(useCase) as T
             }
-        })[BikeViewModel::class.java]
+        })[BikeListViewModel::class.java]
 
         Log.d(TAG,"Before setContent Execution")
 

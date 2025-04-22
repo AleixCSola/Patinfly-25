@@ -47,7 +47,7 @@ import cat.deim.asm_32.patinfly.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BikeListScreen(
-    viewModel: BikeViewModel,
+    viewModel: BikeListViewModel,
     onProfileClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
