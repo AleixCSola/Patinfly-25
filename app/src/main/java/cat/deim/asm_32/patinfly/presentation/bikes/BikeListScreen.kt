@@ -37,8 +37,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import cat.deim.asm_32.patinfly.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,7 +59,8 @@ fun BikeListScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = if (actual == null) "Llistat de bicis" else "Detalls bici"
+                        text = if (actual == null) stringResource(R.string.bike_list_title)
+                        else stringResource(R.string.bike_details_title)
                     )
                 },
                 navigationIcon = {
@@ -69,16 +73,15 @@ fun BikeListScreen(
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
-                }
-                ,
+                },
                 actions = {
                     IconButton(onClick = onProfileClick) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_profile),
-                            contentDescription = "Perfil"
+                            contentDescription = stringResource(R.string.profile)
                         )
                     }
                 }
@@ -116,20 +119,20 @@ fun EachBike(bici: Bike, onDetailsClick: () -> Unit = {}) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
-        shape = RoundedCornerShape(12.dp)
+            .padding(vertical = dimensionResource(R.dimen.padding_small)),
+        elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.elevation_medium)),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_medium))
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
             Image(
                 painter = painterResource(id = R.drawable.bike_card),
-                contentDescription = "Imagen de la bici",
+                contentDescription = stringResource(R.string.bike_image_desc),
                 modifier = Modifier
-                    .height(250.dp)
+                    .height(dimensionResource(R.dimen.bike_image_height))
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(36.dp))
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.corner_radius_large)))
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -140,26 +143,27 @@ fun EachBike(bici: Bike, onDetailsClick: () -> Unit = {}) {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = if (bici.isActive) "Disponible" else "No disponible",
+                    text = if (bici.isActive) stringResource(R.string.available)
+                    else stringResource(R.string.not_available),
                     color = if (bici.isActive) Color.Green else Color.Red
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(text = "Bateria: ${bici.batteryLvl.toInt()}%")
-            Text(text = "Distancia: ${bici.meters}m")
-            Text(text = "Tipo: ${bici.type.name}")
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
+            Text(text = "${stringResource(R.string.battery)} ${bici.batteryLvl.toInt()}%")
+            Text(text = "${stringResource(R.string.distance)} ${bici.meters}m")
+            Text(text = "${stringResource(R.string.type)} ${bici.type.name}")
 
             if (bici.isActive) {
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
                 Button(
                     onClick = onDetailsClick,
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_small)),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
-                    Text("Veure detalls", color = Color.White)
+                    Text(stringResource(R.string.view_details), color = Color.White)
                 }
             }
         }
@@ -171,30 +175,27 @@ fun BikeDetailScreen(
     bike: Bike,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-    ) {
+    Column(modifier = modifier) {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(8.dp)
+            elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.elevation_large))
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_medium))
             ) {
                 Row(
-                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_medium)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.bike_card),
-                        contentDescription = "Foto de la bici",
+                        contentDescription = stringResource(R.string.bike_photo_desc),
                         modifier = Modifier
-                            .size(64.dp)
-                            .clip(RoundedCornerShape(32.dp))
+                            .size(dimensionResource(R.dimen.profile_image_size))
+                            .clip(RoundedCornerShape(dimensionResource(R.dimen.corner_radius_large)))
                     )
-
                     Text(
                         text = bike.name,
                         style = MaterialTheme.typography.headlineSmall,
@@ -202,15 +203,14 @@ fun BikeDetailScreen(
                     )
                 }
                 HorizontalDivider()
-                Detalles("ID:", bike.uuid)
-                Detalles("Tipo:", bike.type.name)
-                Detalles("Bateria:", "${bike.batteryLvl.toInt()}%")
-                Detalles("Distancia:", "${bike.meters}m")
+                Detalles(stringResource(R.string.id_label), bike.uuid)
+                Detalles(stringResource(R.string.type), bike.type.name)
+                Detalles(stringResource(R.string.battery), "${bike.batteryLvl.toInt()}%")
+                Detalles(stringResource(R.string.distance), "${bike.meters}m")
             }
         }
     }
 }
-
 
 @Composable
 private fun Detalles(texto: String, valor: String) {

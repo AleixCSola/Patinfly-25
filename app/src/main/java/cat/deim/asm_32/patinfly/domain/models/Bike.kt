@@ -1,6 +1,7 @@
 package cat.deim.asm_32.patinfly.domain.models
 
 import java.util.Date
+
 data class Bike(
     val uuid: String,
     val name: String,

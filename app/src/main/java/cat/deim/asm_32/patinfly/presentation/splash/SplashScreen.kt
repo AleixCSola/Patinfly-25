@@ -2,25 +2,20 @@ package cat.deim.asm_32.patinfly.presentation.splash
 
 import android.app.Activity
 import android.content.Intent
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import cat.deim.asm_32.patinfly.R
 import cat.deim.asm_32.patinfly.presentation.login.LoginActivity
-import kotlinx.coroutines.delay
 import cat.deim.asm_32.patinfly.ui.theme.Nunito
-
+import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen() {
@@ -35,17 +30,20 @@ fun SplashScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Patinfly",
+                text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.displayLarge.copy(
                     fontFamily = Nunito,
                     fontWeight = FontWeight.Bold
                 ),
                 color = MaterialTheme.colorScheme.onPrimary
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_extra_small)))
             Text(
-                text = "Explore urban areas on two wheels",
-                style = MaterialTheme.typography.bodyLarge
+                text = stringResource(R.string.splash_subtitle),
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontFamily = Nunito,
+                    fontWeight = FontWeight.Thin
+                )
             )
         }
     }

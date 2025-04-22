@@ -11,16 +11,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import cat.deim.asm_32.patinfly.R
 import cat.deim.asm_32.patinfly.domain.usecase.LoginUseCase
 import cat.deim.asm_32.patinfly.presentation.main.MainActivity
 import cat.deim.asm_32.patinfly.data.datasource.local.UserLocalDataSource
 import cat.deim.asm_32.patinfly.data.repository.UserRepository
 import cat.deim.asm_32.patinfly.ui.theme.Nunito
-
 
 @Composable
 fun LoginScreen(loginUseCase: LoginUseCase) {
@@ -50,34 +51,34 @@ fun LoginScreen(loginUseCase: LoginUseCase) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
-                .width(300.dp)
-                .padding(16.dp),
+                .width(dimensionResource(R.dimen.login_form_width))
+                .padding(dimensionResource(R.dimen.padding_medium)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Patinfly",
+                text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.displayLarge.copy(
                     fontFamily = Nunito,
                     fontWeight = FontWeight.Bold
                 ),
                 color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
 
             TextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email") },
+                label = { Text(stringResource(R.string.email_hint)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
             TextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Password") },
+                label = { Text(stringResource(R.string.password_hint)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
@@ -87,21 +88,21 @@ fun LoginScreen(loginUseCase: LoginUseCase) {
                     }
                 )
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
 
             Button(
                 onClick = { attemptLogin() },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = email.isNotBlank() && password.isNotBlank()
             ) {
-                Text("Login")
+                Text(stringResource(R.string.login_button))
             }
 
             if (error) {
                 Text(
-                    text = "Email o contraseña incorrectos",
+                    text = stringResource(R.string.login_error),
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(top = 8.dp)
+                    modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
                 )
             }
         }

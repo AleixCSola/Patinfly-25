@@ -2,7 +2,6 @@ package cat.deim.asm_32.patinfly.data.datasource
 
 import cat.deim.asm_32.patinfly.data.datasource.model.UserModel
 
-
 interface IUserDataSource {
     fun insert(user: UserModel): Boolean
     fun insertOrUpdate(userModel: UserModel): Boolean

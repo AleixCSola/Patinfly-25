@@ -1,4 +1,5 @@
 package cat.deim.asm_32.patinfly.data.datasource
+
 import cat.deim.asm_32.patinfly.data.datasource.model.BikeModel
 
 interface IBikeDataSource {

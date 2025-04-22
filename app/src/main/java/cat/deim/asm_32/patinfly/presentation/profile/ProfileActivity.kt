@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import cat.deim.asm_32.patinfly.data.datasource.local.UserLocalDataSource
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
 
-
 class ProfileActivity : ComponentActivity() {
 
     private val tag = ProfileActivity::class.java.simpleName

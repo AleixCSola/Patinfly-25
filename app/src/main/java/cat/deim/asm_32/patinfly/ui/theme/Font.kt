@@ -7,5 +7,6 @@ import cat.deim.asm_32.patinfly.R
 
 val Nunito = FontFamily(
     Font(R.font.nunito_regular, FontWeight.Normal),
-    Font(R.font.nunito_bold, FontWeight.Bold)
+    Font(R.font.nunito_bold, FontWeight.Bold),
+    Font(R.font.nunito_italic, FontWeight.Thin)
 )

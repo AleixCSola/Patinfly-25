@@ -16,7 +16,6 @@ import cat.deim.asm_32.patinfly.domain.usecase.BikeListUseCase
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
 import cat.deim.asm_32.patinfly.presentation.profile.ProfileActivity
 
-
 class BikeListActivity : ComponentActivity() {
 
     private val TAG = BikeListActivity::class.java.simpleName
