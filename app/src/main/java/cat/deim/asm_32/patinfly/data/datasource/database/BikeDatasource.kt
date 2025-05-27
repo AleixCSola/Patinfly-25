@@ -6,20 +6,20 @@ import cat.deim.asm_32.patinfly.data.datasource.database.model.BikeDTO
 @Dao
 interface BikeDatasource {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(bike: BikeDTO): Long
+    fun insert(bike: BikeDTO): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(bikes: List<BikeDTO>): List<Long>
+    fun insertAll(bikes: List<BikeDTO>): Boolean
 
     @Query("SELECT * FROM bike")
-    suspend fun getAll(): List<BikeDTO>
+    fun getAll(): List<BikeDTO>
 
     @Query("SELECT * FROM bike WHERE uuid = :uuid")
-    suspend fun getById(uuid: String): BikeDTO?
+    fun getById(uuid: String): BikeDTO?
 
     @Update
-    suspend fun update(bike: BikeDTO): Int
+    fun update(bike: BikeDTO): Boolean
 
     @Query("DELETE FROM bike WHERE uuid = :uuid")
-    suspend fun delete(uuid: String): Int
+    fun delete(uuid: String): Boolean
 }
