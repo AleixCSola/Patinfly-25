@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import cat.deim.asm_32.patinfly.R
+import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
 import cat.deim.asm_32.patinfly.domain.usecase.LoginUseCase
 import cat.deim.asm_32.patinfly.presentation.main.MainActivity
 import cat.deim.asm_32.patinfly.data.datasource.local.UserLocalDataSource
@@ -113,10 +114,11 @@ fun LoginScreen(loginUseCase: LoginUseCase) {
 @Composable
 fun PreviewUserLoginForm() {
     val context = LocalContext.current
+    val userDao = AppDatabase.getDatabase(context).userDatasource()
     LoginScreen(
         loginUseCase = LoginUseCase(
             UserRepository(
-                UserLocalDataSource.getInstance(context)
+                userDao, UserLocalDataSource.getInstance(context)
             )
         )
     )

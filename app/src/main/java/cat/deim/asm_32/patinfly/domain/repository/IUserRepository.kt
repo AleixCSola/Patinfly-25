@@ -6,6 +6,6 @@ interface IUserRepository {
     fun setUser(user: User): Boolean
     fun getUser(): User?
     fun getById(uuid: String): User?
-    fun updateUser(user: User): User?
-    fun deleteUser(uuid:String): User?
+    fun updateUser(user: User): Boolean
+    fun deleteUser(uuid:String): Boolean
 }

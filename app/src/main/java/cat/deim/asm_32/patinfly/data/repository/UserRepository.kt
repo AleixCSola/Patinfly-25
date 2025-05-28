@@ -4,22 +4,52 @@ import cat.deim.asm_32.patinfly.data.datasource.IUserDataSource
 import cat.deim.asm_32.patinfly.data.datasource.model.UserModel
 import cat.deim.asm_32.patinfly.domain.models.User
 import cat.deim.asm_32.patinfly.domain.repository.IUserRepository
+import cat.deim.asm_32.patinfly.data.datasource.database.UserDatasource
+import cat.deim.asm_32.patinfly.data.datasource.database.model.UserDTO
 
-class UserRepository (private val userDataSource: IUserDataSource):IUserRepository{
+
+class UserRepository(
+    private val userDao: UserDatasource, private val localDataSource: IUserDataSource
+) : IUserRepository {
+
     override fun setUser(user: User): Boolean {
-        return userDataSource.insert(UserModel.fromDomain(user))
+        val dto = UserDTO.fromDomain(user)
+        return userDao.insert(dto) > 0
     }
+
     override fun getUser(): User? {
-        return userDataSource.getUser()?.toDomain()
+        val userInDb = userDao.getAll().firstOrNull()
+        return if (userInDb != null) {
+            userInDb.toDomain()
+        } else {
+            val localUser = localDataSource.getUser()
+            localUser?.let {
+                val inserted = userDao.insert(UserDTO.fromDomain(it.toDomain()))
+                if (inserted != -1L) it.toDomain() else null
+            }
+        }
     }
-    override fun updateUser(user: User): User? {
-        return userDataSource.update(UserModel.fromDomain(user))?.toDomain()
-    }
+
     override fun getById(uuid: String): User? {
-        return userDataSource.getById(uuid)?.toDomain()
+        val userInDb = userDao.getUserByUUID(uuid)
+        return if (userInDb != null) {
+            userInDb.toDomain()
+        } else {
+            val localUser = localDataSource.getById(uuid)
+            localUser?.let {
+                val inserted = userDao.insert(UserDTO.fromDomain(it.toDomain()))
+                if (inserted != -1L) it.toDomain() else null
+            }
+        }
     }
-    override fun deleteUser(uuid:String): User? {
-        return userDataSource.deleteUser(uuid)?.toDomain()
+
+    override fun updateUser(user: User): Boolean {
+        val dto = UserDTO.fromDomain(user)
+        return userDao.update(dto) > 0
+    }
+
+    override fun deleteUser(uuid: String): Boolean {
+        return userDao.delete(uuid) > 0
     }
 }
 

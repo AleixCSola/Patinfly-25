@@ -23,6 +23,8 @@ import java.util.Date
 import cat.deim.asm_32.patinfly.presentation.bikes.BikeListActivity
 import cat.deim.asm_32.patinfly.presentation.profile.ProfileActivity
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
+import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,12 +86,25 @@ class MainActivity : ComponentActivity() {
                 perMinPricing = PerMinPricing(0.0, 0.25, 1.0)
             )
         )
-        val bikeRepository = BikeRepository(BikeLocalDataSource.getInstance(applicationContext))
-        val userRepository = UserRepository(UserLocalDataSource.getInstance(applicationContext))
-        val pricingPlanRepository = SystemPricingPlanRepository(SystemPricingPlanDataSource.getInstance(applicationContext))
+
+        val db = AppDatabase.getDatabase(applicationContext)
+
+        val bikeDao = db.bikeDatasource()
+        val userDao = db.userDatasource()
+        val planDao = db.systemPricingPlanDatasource()
+
+        val bikeLocalDataSource = BikeLocalDataSource.getInstance(applicationContext)
+        val userLocalDataSource = UserLocalDataSource.getInstance(applicationContext)
+        val planLocalDataSource = SystemPricingPlanDataSource.getInstance(applicationContext)
+
+        val bikeRepository = BikeRepository(bikeDao, bikeLocalDataSource)
+        val userRepository = UserRepository(userDao, userLocalDataSource)
+        val pricingPlanRepository = SystemPricingPlanRepository(planDao, planLocalDataSource)
+
         bikeRepository.insert(ejemploBici)
         userRepository.setUser(ejemploUsu)
         pricingPlanRepository.insert(ejemploPlan)
+
         val bici = bikeRepository.getById(ejemploBici.uuid)
         val usuario = userRepository.getById(ejemploUsu.uuid)
         val plan = pricingPlanRepository.getById(ejemploPlan.dataPlan.planId)

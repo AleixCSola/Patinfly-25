@@ -6,21 +6,21 @@ import cat.deim.asm_32.patinfly.data.datasource.database.model.UserDTO
 @Dao
 interface UserDatasource {
 
-    @Insert
-    fun insert(user: UserDTO): Boolean
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOrUpdate(user: UserDTO): Boolean
-
-    @Query("SELECT * FROM user")
-    fun getUser(): UserDTO?
+    fun insert(userDTO: UserDTO): Long
 
     @Query("SELECT * FROM user WHERE uuid = :uuid")
-    fun getById(uuid: String): UserDTO?
+    fun getUserByUUID(uuid: String): UserDTO?
+
+    @Query("SELECT * FROM user WHERE email = :email")
+    fun getUserByMail(email: String): UserDTO?
+
+    @Query("SELECT * FROM user")
+    fun getAll(): List<UserDTO>
 
     @Update
-    fun update(user: UserDTO): Boolean
+    fun update(userDTO: UserDTO): Int
 
     @Query("DELETE FROM user WHERE uuid = :uuid")
-    fun deleteUser(uuid: String): Boolean
+    fun delete(uuid: String): Int
 }

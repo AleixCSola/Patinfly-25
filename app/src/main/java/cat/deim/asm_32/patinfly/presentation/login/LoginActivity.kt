@@ -9,6 +9,7 @@ import cat.deim.asm_32.patinfly.data.datasource.local.UserLocalDataSource
 import cat.deim.asm_32.patinfly.data.repository.UserRepository
 import cat.deim.asm_32.patinfly.domain.usecase.LoginUseCase
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
+import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
 
 class LoginActivity : ComponentActivity() {
 
@@ -22,9 +23,10 @@ class LoginActivity : ComponentActivity() {
         setContent {
             PatinflyTheme {
                 val context = LocalContext.current
+                val userDao = AppDatabase.getDatabase(context).userDatasource()
                 val loginUseCase = LoginUseCase(
                     UserRepository(
-                        UserLocalDataSource.getInstance(context)
+                        userDao, UserLocalDataSource.getInstance(context)
                     )
                 )
                 LoginScreen(loginUseCase = loginUseCase)

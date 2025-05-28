@@ -15,6 +15,8 @@ import cat.deim.asm_32.patinfly.data.repository.BikeRepository
 import cat.deim.asm_32.patinfly.domain.usecase.BikeListUseCase
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
 import cat.deim.asm_32.patinfly.presentation.profile.ProfileActivity
+import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
+
 
 class BikeListActivity : ComponentActivity() {
 
@@ -26,7 +28,8 @@ class BikeListActivity : ComponentActivity() {
         Log.d(TAG, "BikeListActivity onCreate")
 
         val dataSource = BikeLocalDataSource.getInstance(applicationContext)
-        val repository = BikeRepository(dataSource)
+        val bikeDao = AppDatabase.getDatabase(applicationContext).bikeDatasource()
+        val repository = BikeRepository(bikeDao, dataSource)
         val useCase = BikeListUseCase(repository)
 
         Log.d(TAG, "Creant viewModel Bike...")

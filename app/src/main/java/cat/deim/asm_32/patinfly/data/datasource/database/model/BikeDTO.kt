@@ -11,7 +11,9 @@ import java.util.Date
 data class BikeDTO(
     @PrimaryKey val uuid: String,
     val name: String,
-    val type: String,
+    val typeUuid: String,
+    val typeName: String,
+    val typeType: String,
     val creationDate: Date,
     val lastMaintenanceDate: Date?,
     val isActive: Boolean,
@@ -22,7 +24,9 @@ data class BikeDTO(
         fun fromDomain(bike: Bike): BikeDTO = BikeDTO(
             uuid                = bike.uuid,
             name                = bike.name,
-            type                = bike.type.name,
+            typeUuid            = bike.type.uuid,
+            typeName            = bike.type.name,
+            typeType            = bike.type.type,
             creationDate        = bike.creationDate,
             lastMaintenanceDate = bike.lastMaintenanceDate,
             isActive            = bike.isActive,
@@ -34,7 +38,7 @@ data class BikeDTO(
     fun toDomain(): Bike = Bike(
         uuid                = uuid,
         name                = name,
-        type                = BikeType.valueOf(type),
+        type                = BikeType(typeUuid, typeName, typeType),
         creationDate        = creationDate,
         lastMaintenanceDate = lastMaintenanceDate,
         isActive            = isActive,

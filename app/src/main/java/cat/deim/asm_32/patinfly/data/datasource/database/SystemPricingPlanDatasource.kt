@@ -6,15 +6,15 @@ import cat.deim.asm_32.patinfly.data.datasource.database.model.SystemPricingPlan
 @Dao
 interface SystemPricingPlanDatasource {
 
-    @Insert
-    fun insert(plan: SystemPricingPlanDTO): Boolean
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(plan: SystemPricingPlanDTO): Long
 
     @Query("SELECT * FROM system_pricing_plan WHERE planId = :planId")
     fun getById(planId: String): SystemPricingPlanDTO?
 
     @Update
-    fun update(plan: SystemPricingPlanDTO): Boolean
+    fun update(plan: SystemPricingPlanDTO): Int
 
     @Query("DELETE FROM system_pricing_plan WHERE planId = :planId")
-    fun delete(planId: String): Boolean
+    fun delete(planId: String): Int
 }
