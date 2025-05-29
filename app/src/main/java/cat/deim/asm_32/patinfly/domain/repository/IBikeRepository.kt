@@ -3,9 +3,9 @@ package cat.deim.asm_32.patinfly.domain.repository
 import cat.deim.asm_32.patinfly.domain.models.Bike
 
 interface IBikeRepository {
-    fun insert(bike: Bike): Boolean
-    fun getAll(): Collection<Bike>
-    fun getById(uuid: String): Bike?
-    fun update(bike: Bike): Boolean
-    fun delete(uuid: String): Boolean
+    suspend fun insert(bike: Bike): Boolean
+    suspend fun getAll(): Collection<Bike>
+    suspend fun getById(uuid: String): Bike?
+    suspend fun update(bike: Bike): Boolean
+    suspend fun delete(uuid: String): Boolean
 }

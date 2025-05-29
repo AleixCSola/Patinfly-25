@@ -12,11 +12,11 @@ class SystemPricingPlanRepository(
     private val localDataSource: ISystemPricingPlanDataSource
 ) : ISystemPricingPlanRepository {
 
-    override fun insert(plan: SystemPricingPlan): Boolean {
+    override suspend fun insert(plan: SystemPricingPlan): Boolean {
         return dao.insert(SystemPricingPlanDTO.fromDomain(plan)) > 0
     }
 
-    override fun getById(planId: String): SystemPricingPlan? {
+    override suspend fun getById(planId: String): SystemPricingPlan? {
         val planInDb = dao.getById(planId)
         if (planInDb != null) return planInDb.toDomain()
         //else
@@ -27,11 +27,11 @@ class SystemPricingPlanRepository(
         }
     }
 
-    override fun update(plan: SystemPricingPlan): Boolean {
+    override suspend fun update(plan: SystemPricingPlan): Boolean {
         return dao.update(SystemPricingPlanDTO.fromDomain(plan)) > 0
     }
 
-    override fun delete(planId: String): Boolean {
+    override suspend fun delete(planId: String): Boolean {
         return dao.delete(planId) > 0
     }
 }

@@ -29,7 +29,7 @@ class SystemPricingPlanDataSource private constructor(): ISystemPricingPlanDataS
     private var context:Context?=null
     fun loadPricingData() {
         try {
-            context?.assets?.open("plans.json").use { inputStream ->
+            context?.assets?.open("systems_pricing_plans.json").use { inputStream ->
                 InputStreamReader(inputStream).use { reader ->
                     val json = reader.readText()
                     pricingPlan = parseJson(json)

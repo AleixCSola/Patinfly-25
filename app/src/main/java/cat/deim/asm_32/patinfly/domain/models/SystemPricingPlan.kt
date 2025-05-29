@@ -3,7 +3,7 @@ package cat.deim.asm_32.patinfly.domain.models
 data class SystemPricingPlan(
     val lastUpdated: String,
     val ttl: String,
-    val version: Double,
+    val version: String,
     val dataPlan: Information
 )
 

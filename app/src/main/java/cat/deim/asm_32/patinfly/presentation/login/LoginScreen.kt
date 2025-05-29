@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import cat.deim.asm_32.patinfly.R
 import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
 import cat.deim.asm_32.patinfly.domain.usecase.LoginUseCase
@@ -23,88 +24,59 @@ import cat.deim.asm_32.patinfly.presentation.main.MainActivity
 import cat.deim.asm_32.patinfly.data.datasource.local.UserLocalDataSource
 import cat.deim.asm_32.patinfly.data.repository.UserRepository
 import cat.deim.asm_32.patinfly.ui.theme.Nunito
+import cat.deim.asm_32.patinfly.domain.models.Credentials
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 @Composable
-fun LoginScreen(loginUseCase: LoginUseCase) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf(false) }
-    val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
-
-    fun attemptLogin() {
-        try {
-            val success = loginUseCase.execute(email, password)
-            if (success) {
-                val intent = Intent(context, MainActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                }
-                context.startActivity(intent)
-            } else {
-                error = true
-            }
-        } catch (e: Exception) {
-            error = true
-            Log.e("LOGIN", "Error", e)
-        }
-    }
-
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .width(dimensionResource(R.dimen.login_form_width))
-                .padding(dimensionResource(R.dimen.padding_medium)),
+fun LoginScreen(loginUsecase: LoginUseCase?) {
+    val coroutineScope = rememberCoroutineScope()
+    Surface {
+        Column(modifier = Modifier.width(300.dp),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(R.string.app_name),
-                style = MaterialTheme.typography.displayLarge.copy(
-                    fontFamily = Nunito,
-                    fontWeight = FontWeight.Bold
-                ),
-                color = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
-
-            TextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text(stringResource(R.string.email_hint)) },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-            )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
-
-            TextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text(stringResource(R.string.password_hint)) },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.clearFocus()
-                        attemptLogin()
-                    }
-                )
-            )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
-
-            Button(
-                onClick = { attemptLogin() },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = email.isNotBlank() && password.isNotBlank()
-            ) {
-                Text(stringResource(R.string.login_button))
+            horizontalAlignment = Alignment.CenterHorizontally){
+            var credentials by remember { mutableStateOf(Credentials(email = "", password = "")) }
+            val context = LocalContext.current
+            Row(modifier = Modifier.padding(vertical = 8.dp)) {
+                TextField(
+                    value =credentials.email,
+                    label = { Text(text = "Username") },
+                    onValueChange = {
+                            data -> credentials = credentials.copy(email = data)
+                    },)
             }
-
-            if (error) {
-                Text(
-                    text = stringResource(R.string.login_error),
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
-                )
+            Row(modifier = Modifier.padding(vertical = 8.dp)) {
+                TextField(value = credentials.password,
+                    label = { Text(text = "Password") },
+                    onValueChange = {
+                            data -> credentials = credentials.copy(password = data)
+                    },)
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally){
+                Row {
+                    Button(
+                        modifier = Modifier.width(200.dp),
+                        content = { Text(text = "Login") },
+                        enabled = credentials.isNotEmpty(),
+                        onClick = { coroutineScope.launch {
+                            withContext(Dispatchers.IO) {
+                                val userIsValidated = loginUsecase!!.execute(credentials)
+                                if (userIsValidated) {
+                                    val intent: Intent = Intent()
+                                    intent.setClass(context, MainActivity::class.java)
+                                    context.startActivity(intent)
+                                }
+                            }
+                        }
+                        })
+                }
+                Row {
+                    Button( modifier = Modifier.width(200.dp),
+                        content = { Text(text = "Register") },
+                        onClick = { /*TODO*/ })
+                }
             }
         }
     }
@@ -112,14 +84,7 @@ fun LoginScreen(loginUseCase: LoginUseCase) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewUserLoginForm() {
-    val context = LocalContext.current
-    val userDao = AppDatabase.getDatabase(context).userDatasource()
-    LoginScreen(
-        loginUseCase = LoginUseCase(
-            UserRepository(
-                userDao, UserLocalDataSource.getInstance(context)
-            )
-        )
-    )
+fun UserLoginFormPreview() {
+    LoginScreen(LoginUseCase((UserRepository(AppDatabase.getDatabase(LocalContext.current).userDatasource(),
+        UserLocalDataSource.getInstance(LocalContext.current)))))
 }

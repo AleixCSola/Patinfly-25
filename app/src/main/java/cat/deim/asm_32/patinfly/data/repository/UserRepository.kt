@@ -12,17 +12,17 @@ class UserRepository(
     private val userDao: UserDatasource, private val localDataSource: IUserDataSource
 ) : IUserRepository {
 
-    override fun setUser(user: User): Boolean {
+    override suspend fun setUser(user: User): Boolean {
         val dto = UserDTO.fromDomain(user)
         return userDao.insert(dto) > 0
     }
 
-    override fun getUser(): User? {
-        val userInDb = userDao.getAll().firstOrNull()
+    override suspend fun getUserByEmail(email: String): User? {
+        val userInDb = userDao.getUserByMail(email)
         return if (userInDb != null) {
             userInDb.toDomain()
         } else {
-            val localUser = localDataSource.getUser()
+            val localUser = localDataSource.getUserByEmail(email)
             localUser?.let {
                 val inserted = userDao.insert(UserDTO.fromDomain(it.toDomain()))
                 if (inserted != -1L) it.toDomain() else null
@@ -30,7 +30,7 @@ class UserRepository(
         }
     }
 
-    override fun getById(uuid: String): User? {
+    override suspend fun getById(uuid: String): User? {
         val userInDb = userDao.getUserByUUID(uuid)
         return if (userInDb != null) {
             userInDb.toDomain()
@@ -43,12 +43,12 @@ class UserRepository(
         }
     }
 
-    override fun updateUser(user: User): Boolean {
+    override suspend fun updateUser(user: User): Boolean {
         val dto = UserDTO.fromDomain(user)
         return userDao.update(dto) > 0
     }
 
-    override fun deleteUser(uuid: String): Boolean {
+    override suspend fun deleteUser(uuid: String): Boolean {
         return userDao.delete(uuid) > 0
     }
 }

@@ -5,7 +5,7 @@ import cat.deim.asm_32.patinfly.domain.models.*
 data class SystemPricingPlanModel(
     val lastUpdated: String,
     val ttl: String,
-    val version: Double,
+    val version: String,
     val dataPlan: InformationModel
 ){
     fun toDomain(): SystemPricingPlan = SystemPricingPlan(

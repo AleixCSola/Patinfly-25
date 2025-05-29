@@ -7,20 +7,20 @@ import cat.deim.asm_32.patinfly.data.datasource.database.model.UserDTO
 interface UserDatasource {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(userDTO: UserDTO): Long
+    suspend fun insert(userDTO: UserDTO): Long
 
     @Query("SELECT * FROM user WHERE uuid = :uuid")
-    fun getUserByUUID(uuid: String): UserDTO?
+    suspend fun getUserByUUID(uuid: String): UserDTO?
 
     @Query("SELECT * FROM user WHERE email = :email")
-    fun getUserByMail(email: String): UserDTO?
+    suspend fun getUserByMail(email: String): UserDTO?
 
     @Query("SELECT * FROM user")
-    fun getAll(): List<UserDTO>
+    suspend fun getAll(): List<UserDTO>
 
     @Update
-    fun update(userDTO: UserDTO): Int
+    suspend fun update(userDTO: UserDTO): Int
 
     @Query("DELETE FROM user WHERE uuid = :uuid")
-    fun delete(uuid: String): Int
+    suspend fun delete(uuid: String): Int
 }

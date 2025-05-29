@@ -20,6 +20,7 @@ class BikeLocalDataSource private constructor():IBikeDataSource {
                     instance = it
                     it.context=context
                     it.loadBikeData()
+
                 }
             }
     }

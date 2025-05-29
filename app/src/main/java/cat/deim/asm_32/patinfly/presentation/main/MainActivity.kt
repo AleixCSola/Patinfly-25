@@ -24,6 +24,9 @@ import cat.deim.asm_32.patinfly.presentation.bikes.BikeListActivity
 import cat.deim.asm_32.patinfly.presentation.profile.ProfileActivity
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
 import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+
 
 
 class MainActivity : ComponentActivity() {
@@ -74,7 +77,7 @@ class MainActivity : ComponentActivity() {
         val ejemploPlan = SystemPricingPlan(
             lastUpdated = "2024-02-27T12:34:56Z",
             ttl = "24h",
-            version = 1.0,
+            version = "1.0",
             dataPlan = Information(
                 planId = "plan2025",
                 name = TextType("Patinfly Bike Pricing", "en"),
@@ -101,16 +104,18 @@ class MainActivity : ComponentActivity() {
         val userRepository = UserRepository(userDao, userLocalDataSource)
         val pricingPlanRepository = SystemPricingPlanRepository(planDao, planLocalDataSource)
 
-        bikeRepository.insert(ejemploBici)
-        userRepository.setUser(ejemploUsu)
-        pricingPlanRepository.insert(ejemploPlan)
+        lifecycleScope.launch {
+            userRepository.setUser(ejemploUsu)
+            val usuario = userRepository.getById(ejemploUsu.uuid)
+            Log.d("MainActivity", "Usuari: ${usuario?.name}")
+            //bikeRepository.insert(ejemploBici)
+            //pricingPlanRepository.insert(ejemploPlan)
+            //val bici = bikeRepository.getById(ejemploBici.uuid)
+            //val plan = pricingPlanRepository.getById(ejemploPlan.dataPlan.planId)
+            //Log.d("MainActivity", "Bicicleta: ${bici?.name}")
+            //Log.d("MainActivity", "Plan: ${plan?.dataPlan?.name?.text}")
+        }
 
-        val bici = bikeRepository.getById(ejemploBici.uuid)
-        val usuario = userRepository.getById(ejemploUsu.uuid)
-        val plan = pricingPlanRepository.getById(ejemploPlan.dataPlan.planId)
-        Log.d("MainActivity", "Bicicleta: ${bici?.name}")
-        Log.d("MainActivity", "Usuari: ${usuario?.name}")
-        Log.d("MainActivity", "Plan: ${plan?.dataPlan?.name?.text}")
     }
 
 }

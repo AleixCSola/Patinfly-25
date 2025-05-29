@@ -9,7 +9,7 @@ data class SystemPricingPlanDTO(
     @PrimaryKey val planId: String,
     val lastUpdated: String,
     val ttl: String,
-    val version: Double,
+    val version: String,
 
     val nameText: String,
     val nameLanguage: String,

@@ -11,12 +11,12 @@ class BikeRepository(
     private val bikeDao: BikeDatasource, private val bikeLocalDataSource: IBikeDataSource
 ) : IBikeRepository {
 
-    override fun insert(bike: Bike): Boolean {
+    override suspend fun insert(bike: Bike): Boolean {
         val dto = BikeDTO.fromDomain(bike)
         return bikeDao.insert(dto) > 0
     }
 
-    override fun getAll(): Collection<Bike> {
+    override suspend fun getAll(): Collection<Bike> {
         val dbBikes = bikeDao.getAll()
         return if (dbBikes.isNotEmpty()) {
             dbBikes.map { it.toDomain() }
@@ -31,12 +31,12 @@ class BikeRepository(
         }
     }
 
-    override fun update(bike: Bike): Boolean {
+    override suspend fun update(bike: Bike): Boolean {
         val dto = BikeDTO.fromDomain(bike)
         return bikeDao.update(dto) > 0
     }
 
-    override fun getById(uuid: String): Bike? {
+    override suspend fun getById(uuid: String): Bike? {
         val dbBike = bikeDao.getById(uuid)
         return if (dbBike != null) {
             dbBike.toDomain()
@@ -49,7 +49,7 @@ class BikeRepository(
         }
     }
 
-    override fun delete(uuid: String): Boolean {
+    override suspend fun delete(uuid: String): Boolean {
         return bikeDao.delete(uuid) > 0
     }
 }

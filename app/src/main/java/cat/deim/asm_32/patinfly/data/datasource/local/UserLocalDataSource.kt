@@ -47,6 +47,9 @@ class UserLocalDataSource private constructor():IUserDataSource {
             null
         }
     }
+    fun getUser(): UserModel? {
+        return mUserModel
+    }
     override fun insert(user: UserModel): Boolean{
         mUserModel=user
         return true
@@ -58,7 +61,11 @@ class UserLocalDataSource private constructor():IUserDataSource {
         update(userModel)!=null
         }
     }
-    override fun getUser(): UserModel?= mUserModel
+    override fun getUserByEmail(email: String): UserModel?{
+        return if (mUserModel?.email == email) mUserModel else null
+    }
+
+
     override fun getById(uuid:String): UserModel?{
         return mUserModel?.takeIf {it.uuid==uuid}
     }
