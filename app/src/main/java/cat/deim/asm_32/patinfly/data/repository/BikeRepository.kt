@@ -6,6 +6,7 @@ import cat.deim.asm_32.patinfly.domain.models.Bike
 import cat.deim.asm_32.patinfly.domain.repository.IBikeRepository
 import cat.deim.asm_32.patinfly.data.datasource.database.BikeDatasource
 import cat.deim.asm_32.patinfly.data.datasource.database.model.BikeDTO
+import cat.deim.asm_32.patinfly.data.datasource.local.BikeLocalDataSource
 
 class BikeRepository(
     private val bikeDao: BikeDatasource, private val bikeLocalDataSource: IBikeDataSource
@@ -21,6 +22,11 @@ class BikeRepository(
         return if (dbBikes.isNotEmpty()) {
             dbBikes.map { it.toDomain() }
         } else {
+            if (bikeLocalDataSource.getAll().isEmpty()) {
+                if (bikeLocalDataSource is BikeLocalDataSource) {
+                    bikeLocalDataSource.loadBikeData()
+                }
+            }
             val localBikes = bikeLocalDataSource.getAll()
             if (localBikes.isNotEmpty()) {
                 bikeDao.insertAll(localBikes.map { BikeDTO.fromDomain(it.toDomain()) })

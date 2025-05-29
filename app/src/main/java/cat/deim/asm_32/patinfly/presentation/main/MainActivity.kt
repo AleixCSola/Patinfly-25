@@ -99,15 +99,15 @@ class MainActivity : ComponentActivity() {
         val bikeLocalDataSource = BikeLocalDataSource.getInstance(applicationContext)
         val userLocalDataSource = UserLocalDataSource.getInstance(applicationContext)
         val planLocalDataSource = SystemPricingPlanDataSource.getInstance(applicationContext)
-
-        val bikeRepository = BikeRepository(bikeDao, bikeLocalDataSource)
+        planLocalDataSource.loadPricingData()
         val userRepository = UserRepository(userDao, userLocalDataSource)
-        val pricingPlanRepository = SystemPricingPlanRepository(planDao, planLocalDataSource)
 
         lifecycleScope.launch {
             userRepository.setUser(ejemploUsu)
             val usuario = userRepository.getById(ejemploUsu.uuid)
             Log.d("MainActivity", "Usuari: ${usuario?.name}")
+            //val bikeRepository = BikeRepository(bikeDao, bikeLocalDataSource)
+            //val pricingPlanRepository = SystemPricingPlanRepository(planDao, planLocalDataSource)
             //bikeRepository.insert(ejemploBici)
             //pricingPlanRepository.insert(ejemploPlan)
             //val bici = bikeRepository.getById(ejemploBici.uuid)

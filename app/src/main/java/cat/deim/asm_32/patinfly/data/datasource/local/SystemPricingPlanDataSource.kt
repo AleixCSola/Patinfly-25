@@ -20,7 +20,6 @@ class SystemPricingPlanDataSource private constructor(): ISystemPricingPlanDataS
                 instance ?: SystemPricingPlanDataSource().also {
                     instance = it
                     it.context=context
-                    it.loadPricingData()
                 }
             }
     }

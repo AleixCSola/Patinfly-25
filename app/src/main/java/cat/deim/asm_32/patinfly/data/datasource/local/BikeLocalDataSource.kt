@@ -19,8 +19,6 @@ class BikeLocalDataSource private constructor():IBikeDataSource {
                 instance ?: BikeLocalDataSource().also {
                     instance = it
                     it.context=context
-                    it.loadBikeData()
-
                 }
             }
     }
