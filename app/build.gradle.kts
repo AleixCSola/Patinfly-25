@@ -66,10 +66,22 @@ dependencies {
     implementation ("androidx.compose.material3:material3:1.1.2")
     implementation ("androidx.activity:activity-compose:1.8.0")
     implementation ("androidx.compose.ui:ui-text-google-fonts:1.5.0")
+
     // Room components
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
+
     // Kotlin Extensions and Coroutines support
     implementation("androidx.room:room-ktx:2.6.1")
 
+    //Retrofit
+    // https://square.github.io/retrofit/
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    
+    // Retrofit with Kotlin serialization Converter
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
 }

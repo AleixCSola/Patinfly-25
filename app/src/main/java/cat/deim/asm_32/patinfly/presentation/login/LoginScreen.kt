@@ -22,6 +22,7 @@ import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
 import cat.deim.asm_32.patinfly.domain.usecase.LoginUseCase
 import cat.deim.asm_32.patinfly.presentation.main.MainActivity
 import cat.deim.asm_32.patinfly.data.datasource.local.UserLocalDataSource
+import cat.deim.asm_32.patinfly.data.datasource.remote.BikeAPIDataSource
 import cat.deim.asm_32.patinfly.data.repository.UserRepository
 import cat.deim.asm_32.patinfly.ui.theme.Nunito
 import cat.deim.asm_32.patinfly.domain.models.Credentials
@@ -86,5 +87,5 @@ fun LoginScreen(loginUsecase: LoginUseCase?) {
 @Composable
 fun UserLoginFormPreview() {
     LoginScreen(LoginUseCase((UserRepository(AppDatabase.getDatabase(LocalContext.current).userDatasource(),
-        UserLocalDataSource.getInstance(LocalContext.current)))))
+        UserLocalDataSource.getInstance(LocalContext.current))), BikeAPIDataSource.getService()))
 }

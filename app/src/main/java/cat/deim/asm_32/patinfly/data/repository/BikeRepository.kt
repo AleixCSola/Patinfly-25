@@ -17,12 +17,23 @@ class BikeRepository(
         return bikeDao.insert(dto) > 0
     }
 
+    override suspend fun loadLocalData() {
+        if (bikeLocalDataSource is BikeLocalDataSource) {
+            bikeLocalDataSource.loadBikeData()
+        }
+        val localBikes = bikeLocalDataSource.getAll()
+        if (localBikes.isNotEmpty()) {
+            bikeDao.insertAll(localBikes.map { BikeDTO.fromDomain(it.toDomain()) })
+            localBikes.map { it.toDomain() }
+        }
+    }
+
     override suspend fun getAll(): Collection<Bike> {
         val dbBikes = bikeDao.getAll()
         return if (dbBikes.isNotEmpty()) {
             dbBikes.map { it.toDomain() }
         } else {
-            if (bikeLocalDataSource.getAll().isEmpty()) {
+            /*if (bikeLocalDataSource.getAll().isEmpty()) {
                 if (bikeLocalDataSource is BikeLocalDataSource) {
                     bikeLocalDataSource.loadBikeData()
                 }
@@ -31,11 +42,11 @@ class BikeRepository(
             if (localBikes.isNotEmpty()) {
                 bikeDao.insertAll(localBikes.map { BikeDTO.fromDomain(it.toDomain()) })
                 localBikes.map { it.toDomain() }
-            } else {
+            } else {*/
                 emptyList()
             }
         }
-    }
+    //}
 
     override suspend fun update(bike: Bike): Boolean {
         val dto = BikeDTO.fromDomain(bike)

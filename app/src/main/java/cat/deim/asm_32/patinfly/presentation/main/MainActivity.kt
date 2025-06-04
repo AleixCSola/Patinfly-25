@@ -25,6 +25,7 @@ import cat.deim.asm_32.patinfly.presentation.profile.ProfileActivity
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
 import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
 import androidx.lifecycle.lifecycleScope
+import cat.deim.asm_32.patinfly.data.datasource.remote.BikeAPIDataSource
 import kotlinx.coroutines.launch
 
 
@@ -80,7 +81,7 @@ class MainActivity : ComponentActivity() {
             version = "1.0",
             dataPlan = Information(
                 planId = "plan2025",
-                name = TextType("Patinfly Bike Pricing", "en"),
+                name = TextType("Patinfly Bike Pricing Test", "en"),
                 currency = "EUR",
                 price = 1.00,
                 isTaxable = true,
@@ -99,21 +100,28 @@ class MainActivity : ComponentActivity() {
         val bikeLocalDataSource = BikeLocalDataSource.getInstance(applicationContext)
         val userLocalDataSource = UserLocalDataSource.getInstance(applicationContext)
         val planLocalDataSource = SystemPricingPlanDataSource.getInstance(applicationContext)
-        planLocalDataSource.loadPricingData()
+
         val userRepository = UserRepository(userDao, userLocalDataSource)
+        val bikeRepository = BikeRepository(bikeDao, bikeLocalDataSource)
+        val pricingPlanRepository = SystemPricingPlanRepository(planDao, planLocalDataSource)
+
+        /*lifecycleScope.launch { //se pot desactivar un cop fet el load per primer cop
+            bikeRepository.loadLocalData()
+            Log.d("MainActivity", "LocalBikes llegides i guardades a db")
+            //bikeRepository.insert(ejemploBici)
+            //val bici = bikeRepository.getById(ejemploBici.uuid)
+            //Log.d("MainActivity", "Bicicleta: ${bici?.name}")
+        }*/
 
         lifecycleScope.launch {
             userRepository.setUser(ejemploUsu)
             val usuario = userRepository.getById(ejemploUsu.uuid)
             Log.d("MainActivity", "Usuari: ${usuario?.name}")
-            //val bikeRepository = BikeRepository(bikeDao, bikeLocalDataSource)
-            //val pricingPlanRepository = SystemPricingPlanRepository(planDao, planLocalDataSource)
-            //bikeRepository.insert(ejemploBici)
-            //pricingPlanRepository.insert(ejemploPlan)
-            //val bici = bikeRepository.getById(ejemploBici.uuid)
-            //val plan = pricingPlanRepository.getById(ejemploPlan.dataPlan.planId)
-            //Log.d("MainActivity", "Bicicleta: ${bici?.name}")
-            //Log.d("MainActivity", "Plan: ${plan?.dataPlan?.name?.text}")
+
+            planLocalDataSource.loadPricingData()
+            pricingPlanRepository.insert(ejemploPlan)
+            val plan = pricingPlanRepository.getById(ejemploPlan.dataPlan.planId)
+            Log.d("MainActivity", "Plan: ${plan?.dataPlan?.name?.text}")
         }
 
     }

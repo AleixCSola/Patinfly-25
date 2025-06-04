@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import cat.deim.asm_32.patinfly.data.datasource.remote.APIService
+import cat.deim.asm_32.patinfly.data.datasource.remote.BikeAPIDataSource
 
 
 class LoginActivity : ComponentActivity() {
@@ -27,11 +29,12 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val apiService = BikeAPIDataSource.getInstance(applicationContext)
                     LoginScreen(
                         LoginUseCase((UserRepository(
                             AppDatabase.getDatabase(LocalContext.current).userDatasource(),
                             UserLocalDataSource.getInstance(LocalContext.current)
-                            )))
+                            )), BikeAPIDataSource.getService())
                     )
                 }
             }
