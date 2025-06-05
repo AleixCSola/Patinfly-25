@@ -1,4 +1,4 @@
-package cat.deim.asm_32.patinfly.data.datasource.local
+/*package cat.deim.asm_32.patinfly.data.datasource.local
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -84,4 +84,4 @@ class BikeLocalDataSource private constructor():IBikeDataSource {
         bicis.removeIf { it.uuid == uuid}
         return elim
     }
-}
+}*/

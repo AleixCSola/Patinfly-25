@@ -19,7 +19,7 @@ data class Token(
 
 @Serializable
 data class LoginResponse(
-    @SerialName(value = "boolean")
+    @SerialName(value = "success")
     val success: Boolean,
     val token: Token,
     @SerialName(value = "version")

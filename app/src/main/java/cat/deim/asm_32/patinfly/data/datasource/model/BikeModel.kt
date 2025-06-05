@@ -1,4 +1,4 @@
-package cat.deim.asm_32.patinfly.data.datasource.model
+/*package cat.deim.asm_32.patinfly.data.datasource.model
 
 import cat.deim.asm_32.patinfly.domain.models.Bike
 import com.google.gson.annotations.SerializedName
@@ -49,4 +49,4 @@ data class BikeModel(
             meters = bike.meters
         )
     }
-}
+}*/

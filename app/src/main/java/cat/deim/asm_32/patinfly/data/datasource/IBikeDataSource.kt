@@ -1,4 +1,4 @@
-package cat.deim.asm_32.patinfly.data.datasource
+/*package cat.deim.asm_32.patinfly.data.datasource
 
 import cat.deim.asm_32.patinfly.data.datasource.model.BikeModel
 
@@ -9,4 +9,4 @@ interface IBikeDataSource {
     fun getById(uuid: String): BikeModel?
     fun update(bike: BikeModel): BikeModel?
     fun delete(uuid: String): Boolean
-}
+}*/

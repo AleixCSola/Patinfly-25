@@ -5,10 +5,15 @@ import java.util.Date
 data class Bike(
     val uuid: String,
     val name: String,
-    val type: BikeType,
-    val creationDate: Date,
-    val lastMaintenanceDate: Date?,
-    val isActive: Boolean=false,
+    val typeUuid: String,
+    val isDisabled: Boolean,
+    val isReserved: Boolean,
+    val isRented: Boolean,
+    val lat: Double,
+    val lon: Double
+    /* lastMaintenanceDate: Date?,
     val batteryLvl: Double =100.0,
-    val meters: Int=0
+    val creationDate: Date,
+    val type: BikeType,
+    val meters: Int=0*/
 )

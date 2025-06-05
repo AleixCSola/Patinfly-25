@@ -17,6 +17,15 @@ class UserRepository(
         return userDao.insert(dto) > 0
     }
 
+    override suspend fun getById(uuid: String): User? {
+        val userInDb = userDao.getUserByUUID(uuid)
+        return if (userInDb != null) {
+            userInDb.toDomain()
+        } else {
+            null //no hi ha metode api de getuser per id
+            }
+    }
+
     override suspend fun getUserByEmail(email: String): User? {
         val userInDb = userDao.getUserByMail(email)
         return if (userInDb != null) {

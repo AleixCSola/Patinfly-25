@@ -21,9 +21,10 @@ class LoginUseCase(
                 val token = loginResponse.token
                 val sharedPrefs = context.getSharedPreferences("session", Context.MODE_PRIVATE)
                 sharedPrefs.edit().putString("token", token.access).apply()
-                sharedPrefs.edit().putString("email", credentials.email).apply()
 
-                val userData = apiService.getUser("Bearer ${token.access}")
+                val userData = apiService.getUser(token.access)
+                sharedPrefs.edit().putString("uuid", userData.uuid).apply()
+
                 val now = Date()
                 val domainUser = User(
                     uuid = userData.uuid,

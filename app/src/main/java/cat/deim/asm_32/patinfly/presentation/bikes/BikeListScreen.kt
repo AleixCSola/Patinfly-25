@@ -142,7 +142,7 @@ fun EachBike(bici: Bike, onDetailsClick: () -> Unit = {}) {
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
-                Text(
+                /*Text(
                     text = if (bici.isActive) stringResource(R.string.available)
                     else stringResource(R.string.not_available),
                     color = if (bici.isActive) Color.Green else Color.Red
@@ -164,7 +164,7 @@ fun EachBike(bici: Bike, onDetailsClick: () -> Unit = {}) {
                     )
                 ) {
                     Text(stringResource(R.string.view_details), color = Color.White)
-                }
+                }*/
             }
         }
     }
@@ -204,9 +204,9 @@ fun BikeDetailScreen(
                 }
                 HorizontalDivider()
                 Detalles(stringResource(R.string.id_label), bike.uuid)
-                Detalles(stringResource(R.string.type), bike.type.name)
-                Detalles(stringResource(R.string.battery), "${bike.batteryLvl.toInt()}%")
-                Detalles(stringResource(R.string.distance), "${bike.meters}m")
+                Detalles(stringResource(R.string.type), bike.typeUuid)
+                //Detalles(stringResource(R.string.battery), "${bike.batteryLvl.toInt()}%")
+                //Detalles(stringResource(R.string.distance), "${bike.meters}m")
             }
         }
     }

@@ -17,4 +17,7 @@ interface APIService {
 
     @GET("user")
     suspend fun getUser(@Header("Authorization") token: String): UserResponse
+
+    @GET("vehicle")
+    suspend fun getVehicles(@Header("Authorization") token: String): BikesResponse
 }

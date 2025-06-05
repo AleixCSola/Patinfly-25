@@ -12,37 +12,52 @@ data class BikeDTO(
     @PrimaryKey val uuid: String,
     val name: String,
     val typeUuid: String,
-    val typeName: String,
-    val typeType: String,
-    val creationDate: Date,
-    val lastMaintenanceDate: Date?,
-    val isActive: Boolean,
-    val batteryLvl: Double,
-    val meters: Int
+    val isDisabled: Boolean,
+    val isReserved: Boolean,
+    val isRented: Boolean,
+    val lat: Double,
+    val lon: Double
+    //val creationDate: Date,
+    //val lastMaintenanceDate: Date?,
+    //val batteryLvl: Double,
+    //val meters: Int
+    //val typeName: String,
+    //val typeType: String,
 ) {
     companion object {
         fun fromDomain(bike: Bike): BikeDTO = BikeDTO(
             uuid                = bike.uuid,
             name                = bike.name,
-            typeUuid            = bike.type.uuid,
-            typeName            = bike.type.name,
+            typeUuid            = bike.typeUuid,
+            isDisabled          = bike.isDisabled,
+            isReserved          = bike.isReserved,
+            isRented            = bike.isRented,
+            lat                 = bike.lat,
+            lon                 = bike.lon
+            /*typeName            = bike.type.name,
             typeType            = bike.type.type,
             creationDate        = bike.creationDate,
             lastMaintenanceDate = bike.lastMaintenanceDate,
             isActive            = bike.isActive,
             batteryLvl          = bike.batteryLvl,
-            meters              = bike.meters
+            meters              = bike.meters*/
         )
     }
 
     fun toDomain(): Bike = Bike(
         uuid                = uuid,
         name                = name,
-        type                = BikeType(typeUuid, typeName, typeType),
-        creationDate        = creationDate,
+        typeUuid            = typeUuid,
+        isDisabled          = isDisabled,
+        isReserved          = isReserved,
+        isRented            = isRented,
+        lat                 = lat,
+        lon                 = lon
+
+        /*creationDate        = creationDate,
         lastMaintenanceDate = lastMaintenanceDate,
         isActive            = isActive,
         batteryLvl          = batteryLvl,
-        meters              = meters
+        meters              = meters*/
     )
 }

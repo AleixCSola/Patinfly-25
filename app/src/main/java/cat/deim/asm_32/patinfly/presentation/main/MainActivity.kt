@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import android.content.Intent
 import android.util.Log
-import cat.deim.asm_32.patinfly.data.datasource.local.BikeLocalDataSource
 import cat.deim.asm_32.patinfly.data.datasource.local.SystemPricingPlanDataSource
 import cat.deim.asm_32.patinfly.data.datasource.local.UserLocalDataSource
 import cat.deim.asm_32.patinfly.data.repository.BikeRepository
@@ -56,16 +55,7 @@ class MainActivity : ComponentActivity() {
             name = "Electric",
             type = "EB001"
         )
-        val ejemploBici = Bike(
-            uuid = "b1-123e4567-e89b-12d3-a456-426614174001",
-            name = "Mountain Explorer",
-            type = bikeType,
-            creationDate = Date(),
-            lastMaintenanceDate = Date(),
-            isActive = true,
-            batteryLvl = 85.0,
-            meters = 1500
-        )
+
         val ejemploUsu = User(
             uuid = "123e4567-e89b-12d3-a456-426614174000",
             name = "John Doe",
@@ -98,9 +88,6 @@ class MainActivity : ComponentActivity() {
         val planDao = db.systemPricingPlanDatasource()
 
         val planLocalDataSource = SystemPricingPlanDataSource.getInstance(applicationContext)
-
-        val userRepository = UserRepository(userDao, )
-        val bikeRepository = BikeRepository(bikeDao, )
         val pricingPlanRepository = SystemPricingPlanRepository(planDao, planLocalDataSource)
 
         /*lifecycleScope.launch { //se pot desactivar un cop fet el load per primer cop

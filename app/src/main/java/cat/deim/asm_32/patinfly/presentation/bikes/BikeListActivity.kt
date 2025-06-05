@@ -10,12 +10,13 @@ import androidx.compose.ui.Modifier
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import cat.deim.asm_32.patinfly.data.datasource.local.BikeLocalDataSource
 import cat.deim.asm_32.patinfly.data.repository.BikeRepository
 import cat.deim.asm_32.patinfly.domain.usecase.BikeListUseCase
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
 import cat.deim.asm_32.patinfly.presentation.profile.ProfileActivity
 import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
+import cat.deim.asm_32.patinfly.data.datasource.remote.BikeAPIDataSource
+import android.content.Context
 
 
 class BikeListActivity : ComponentActivity() {
@@ -27,36 +28,41 @@ class BikeListActivity : ComponentActivity() {
 
         Log.d(TAG, "BikeListActivity onCreate")
 
-        val dataSource = BikeLocalDataSource.getInstance(applicationContext)
+        //val dataSource = BikeLocalDataSource.getInstance(applicationContext)
         val bikeDao = AppDatabase.getDatabase(applicationContext).bikeDatasource()
-        val repository = BikeRepository(bikeDao, )
-        val useCase = BikeListUseCase(repository)
+        val apiService = BikeAPIDataSource.getService()
+        val sharedPrefs = getSharedPreferences("session", Context.MODE_PRIVATE)
+        val token = sharedPrefs.getString("token", null)
+        if (token != null){
+            val repository = BikeRepository(bikeDao, apiService, token)
+            val useCase = BikeListUseCase(repository)
 
-        Log.d(TAG, "Creant viewModel Bike...")
+            Log.d(TAG, "Creant viewModel Bike...")
 
-        val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return BikeListViewModel(useCase) as T
-            }
-        })[BikeListViewModel::class.java]
+            val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return BikeListViewModel(useCase) as T
+                }
+            })[BikeListViewModel::class.java]
 
-        Log.d(TAG,"Before setContent Execution")
+            Log.d(TAG,"Before setContent Execution")
 
-        setContent {
-            PatinflyTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    BikeListScreen(
-                        viewModel = viewModel,
-                        onProfileClick = {
-                            startActivity(Intent(this, ProfileActivity::class.java))
-                        },
-                        onBackClick = {
-                            finish()
-                        }
-                    )
+            setContent {
+                PatinflyTheme {
+                    Surface(modifier = Modifier.fillMaxSize()) {
+                        BikeListScreen(
+                            viewModel = viewModel,
+                            onProfileClick = {
+                                startActivity(Intent(this, ProfileActivity::class.java))
+                            },
+                            onBackClick = {
+                                finish()
+                            }
+                        )
+                    }
                 }
             }
+            Log.d(TAG, "After setContent Execution")
         }
-        Log.d(TAG, "After setContent Execution")
     }
 }

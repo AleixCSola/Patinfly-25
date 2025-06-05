@@ -23,15 +23,15 @@ class ProfileActivity : ComponentActivity() {
         Log.d(tag, "ProfileActivity onCreate. Before setContent Execution")
 
         val sharedPrefs = getSharedPreferences("session", Context.MODE_PRIVATE)
-        val email = sharedPrefs.getString("email", null)
+        val uuid = sharedPrefs.getString("uuid", null)
 
         var user: User? = null
 
         lifecycleScope.launch {
-            if (email != null) {
+            if (uuid != null) {
                 val userDao = AppDatabase.getDatabase(applicationContext).userDatasource()
                 val userRepository = UserRepository(userDao)
-                user = userRepository.getUserByEmail(email)
+                user = userRepository.getById(uuid)
             }
 
             setContent {
