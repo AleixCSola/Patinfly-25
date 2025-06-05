@@ -9,7 +9,7 @@ import cat.deim.asm_32.patinfly.data.datasource.database.model.UserDTO
 
 
 class UserRepository(
-    private val userDao: UserDatasource, private val localDataSource: IUserDataSource
+    private val userDao: UserDatasource
 ) : IUserRepository {
 
     override suspend fun setUser(user: User): Boolean {
@@ -22,24 +22,8 @@ class UserRepository(
         return if (userInDb != null) {
             userInDb.toDomain()
         } else {
-            val localUser = localDataSource.getUserByEmail(email)
-            localUser?.let {
-                val inserted = userDao.insert(UserDTO.fromDomain(it.toDomain()))
-                if (inserted != -1L) it.toDomain() else null
-            }
-        }
-    }
+             null
 
-    override suspend fun getById(uuid: String): User? {
-        val userInDb = userDao.getUserByUUID(uuid)
-        return if (userInDb != null) {
-            userInDb.toDomain()
-        } else {
-            val localUser = localDataSource.getById(uuid)
-            localUser?.let {
-                val inserted = userDao.insert(UserDTO.fromDomain(it.toDomain()))
-                if (inserted != -1L) it.toDomain() else null
-            }
         }
     }
 

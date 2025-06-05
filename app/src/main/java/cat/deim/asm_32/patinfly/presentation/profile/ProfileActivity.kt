@@ -1,11 +1,17 @@
 package cat.deim.asm_32.patinfly.presentation.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.lifecycle.lifecycleScope
+import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
 import cat.deim.asm_32.patinfly.data.datasource.local.UserLocalDataSource
+import cat.deim.asm_32.patinfly.data.repository.UserRepository
+import cat.deim.asm_32.patinfly.domain.models.User
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
+import kotlinx.coroutines.launch
 
 class ProfileActivity : ComponentActivity() {
 
@@ -16,15 +22,26 @@ class ProfileActivity : ComponentActivity() {
 
         Log.d(tag, "ProfileActivity onCreate. Before setContent Execution")
 
-        val user = UserLocalDataSource.getInstance(applicationContext).getUser()
+        val sharedPrefs = getSharedPreferences("session", Context.MODE_PRIVATE)
+        val email = sharedPrefs.getString("email", null)
 
-        setContent {
-            PatinflyTheme {
-                user?.let {
-                    ProfileScreen(usuari = it)
+        var user: User? = null
+
+        lifecycleScope.launch {
+            if (email != null) {
+                val userDao = AppDatabase.getDatabase(applicationContext).userDatasource()
+                val userRepository = UserRepository(userDao)
+                user = userRepository.getUserByEmail(email)
+            }
+
+            setContent {
+                PatinflyTheme {
+                    user?.let {
+                        ProfileScreen(usuari = it)
+                    }
                 }
             }
+            Log.d(tag, "After setContent Execution")
         }
-        Log.d(tag, "After setContent Execution")
     }
 }

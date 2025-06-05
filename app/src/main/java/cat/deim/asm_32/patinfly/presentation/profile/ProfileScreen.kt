@@ -18,11 +18,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.app.ActivityCompat
 import cat.deim.asm_32.patinfly.R
-import cat.deim.asm_32.patinfly.data.datasource.model.UserModel
+import cat.deim.asm_32.patinfly.domain.models.User
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(usuari: UserModel) {
+fun ProfileScreen(usuari: User) {
     val context = LocalContext.current
 
     Scaffold(

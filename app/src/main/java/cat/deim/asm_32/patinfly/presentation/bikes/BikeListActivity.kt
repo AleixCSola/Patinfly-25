@@ -29,7 +29,7 @@ class BikeListActivity : ComponentActivity() {
 
         val dataSource = BikeLocalDataSource.getInstance(applicationContext)
         val bikeDao = AppDatabase.getDatabase(applicationContext).bikeDatasource()
-        val repository = BikeRepository(bikeDao, dataSource)
+        val repository = BikeRepository(bikeDao, )
         val useCase = BikeListUseCase(repository)
 
         Log.d(TAG, "Creant viewModel Bike...")

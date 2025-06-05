@@ -33,7 +33,6 @@ class LoginActivity : ComponentActivity() {
                     LoginScreen(
                         LoginUseCase((UserRepository(
                             AppDatabase.getDatabase(LocalContext.current).userDatasource(),
-                            UserLocalDataSource.getInstance(LocalContext.current)
                             )), BikeAPIDataSource.getService())
                     )
                 }

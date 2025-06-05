@@ -2,6 +2,8 @@ package cat.deim.asm_32.patinfly.data.datasource.remote
 
 import android.annotation.SuppressLint
 import android.content.Context
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -22,12 +24,20 @@ class BikeAPIDataSource private constructor() {
                 instance ?: BikeAPIDataSource().also {
                     instance = it
                     it.context = context
+                    val logging = HttpLoggingInterceptor().apply {
+                        level = HttpLoggingInterceptor.Level.HEADERS
+                    }
+
+                    val client = OkHttpClient.Builder()
+                        .addInterceptor(logging)
+                        .build()
+
                     retrofit = Retrofit.Builder()
-                    //addConverterFactory(Json.asConverterFactory(“application/json”.toMediaType()))
-                    //.addConverterFactory(ScalarsConverterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl(BASE_URL)
-                    .build().create(APIService::class.java)
+                        .baseUrl(BASE_URL)
+                        .client(client)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                        .create(APIService::class.java)
                 }
             }
 

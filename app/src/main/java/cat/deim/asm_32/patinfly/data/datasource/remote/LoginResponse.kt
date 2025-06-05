@@ -3,17 +3,25 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Token(
-    val id: Int,
+    @SerialName(value = "id")
+    val id: String,
+    @SerialName(value = "email")
     val email: String,
+    @SerialName(value = "access")
     val access: String,
+    @SerialName(value = "expires")
     val expires: String,
+    @SerialName(value = "refresh")
     val refresh: String,
-    @SerialName("expires_refresh") val expiresRefresh: String
+    @SerialName(value = "expires_refresh")
+    val expiresRefresh: String
 )
 
 @Serializable
 data class LoginResponse(
+    @SerialName(value = "boolean")
     val success: Boolean,
     val token: Token,
+    @SerialName(value = "version")
     val version: String
 )

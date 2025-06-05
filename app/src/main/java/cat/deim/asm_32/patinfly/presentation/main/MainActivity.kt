@@ -97,16 +97,13 @@ class MainActivity : ComponentActivity() {
         val userDao = db.userDatasource()
         val planDao = db.systemPricingPlanDatasource()
 
-        val bikeLocalDataSource = BikeLocalDataSource.getInstance(applicationContext)
-        val userLocalDataSource = UserLocalDataSource.getInstance(applicationContext)
         val planLocalDataSource = SystemPricingPlanDataSource.getInstance(applicationContext)
 
-        val userRepository = UserRepository(userDao, userLocalDataSource)
-        val bikeRepository = BikeRepository(bikeDao, bikeLocalDataSource)
+        val userRepository = UserRepository(userDao, )
+        val bikeRepository = BikeRepository(bikeDao, )
         val pricingPlanRepository = SystemPricingPlanRepository(planDao, planLocalDataSource)
 
         /*lifecycleScope.launch { //se pot desactivar un cop fet el load per primer cop
-            bikeRepository.loadLocalData()
             Log.d("MainActivity", "LocalBikes llegides i guardades a db")
             //bikeRepository.insert(ejemploBici)
             //val bici = bikeRepository.getById(ejemploBici.uuid)
@@ -114,9 +111,9 @@ class MainActivity : ComponentActivity() {
         }*/
 
         lifecycleScope.launch {
-            userRepository.setUser(ejemploUsu)
+            /*userRepository.setUser(ejemploUsu)
             val usuario = userRepository.getById(ejemploUsu.uuid)
-            Log.d("MainActivity", "Usuari: ${usuario?.name}")
+            Log.d("MainActivity", "Usuari: ${usuario?.name}")*/
 
             planLocalDataSource.loadPricingData()
             pricingPlanRepository.insert(ejemploPlan)

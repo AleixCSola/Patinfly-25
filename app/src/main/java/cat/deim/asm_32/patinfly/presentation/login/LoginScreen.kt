@@ -63,7 +63,7 @@ fun LoginScreen(loginUsecase: LoginUseCase?) {
                         enabled = credentials.isNotEmpty(),
                         onClick = { coroutineScope.launch {
                             withContext(Dispatchers.IO) {
-                                val userIsValidated = loginUsecase!!.execute(credentials)
+                                val userIsValidated = loginUsecase!!.execute(credentials, context)
                                 if (userIsValidated) {
                                     val intent: Intent = Intent()
                                     intent.setClass(context, MainActivity::class.java)
@@ -87,5 +87,5 @@ fun LoginScreen(loginUsecase: LoginUseCase?) {
 @Composable
 fun UserLoginFormPreview() {
     LoginScreen(LoginUseCase((UserRepository(AppDatabase.getDatabase(LocalContext.current).userDatasource(),
-        UserLocalDataSource.getInstance(LocalContext.current))), BikeAPIDataSource.getService()))
+        )), BikeAPIDataSource.getService()))
 }

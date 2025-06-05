@@ -9,7 +9,7 @@ import cat.deim.asm_32.patinfly.data.datasource.database.model.BikeDTO
 import cat.deim.asm_32.patinfly.data.datasource.local.BikeLocalDataSource
 
 class BikeRepository(
-    private val bikeDao: BikeDatasource, private val bikeLocalDataSource: IBikeDataSource
+    private val bikeDao: BikeDatasource
 ) : IBikeRepository {
 
     override suspend fun insert(bike: Bike): Boolean {
@@ -17,7 +17,7 @@ class BikeRepository(
         return bikeDao.insert(dto) > 0
     }
 
-    override suspend fun loadLocalData() {
+    /*override suspend fun loadLocalData() {
         if (bikeLocalDataSource is BikeLocalDataSource) {
             bikeLocalDataSource.loadBikeData()
         }
@@ -26,7 +26,7 @@ class BikeRepository(
             bikeDao.insertAll(localBikes.map { BikeDTO.fromDomain(it.toDomain()) })
             localBikes.map { it.toDomain() }
         }
-    }
+    }*/
 
     override suspend fun getAll(): Collection<Bike> {
         val dbBikes = bikeDao.getAll()
@@ -58,11 +58,8 @@ class BikeRepository(
         return if (dbBike != null) {
             dbBike.toDomain()
         } else {
-            val localBike = bikeLocalDataSource.getById(uuid)
-            localBike?.let {
-                bikeDao.insert(BikeDTO.fromDomain(it.toDomain()))
-                it.toDomain()
-            }
+            return null
+
         }
     }
 
