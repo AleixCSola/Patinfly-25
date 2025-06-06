@@ -27,8 +27,8 @@ data class Vehicle(
         @SerialName(value = "lon")
         val lon: Double,
 
-        //@SerialName(value = "rental_uris")
-        //val rentalUris: RentalUris,
+        @SerialName(value = "rental_uris")
+        val rentalUris: RentalUris,
 
         @SerialName(value = "vehicle_id")
         val vehicleId: String,
@@ -40,32 +40,32 @@ data class Vehicle(
         val groupCourse: String
 )
 
-/*@Serializable
+@Serializable
 data class RentalUris(
         @SerialName(value = "android")
         val android: String,
 
         @SerialName(value = "ios")
         val ios: String
-)*/
+)
 
 @Serializable
 data class BikesResponse(
-
+        @SerialName(value = "vehicles")
         val vehicles: List<Vehicle>,
         @SerialName(value = "version")
         val version: String
 ) {
         fun toDomain(): List<Bike> = vehicles.map {
                 Bike(
-                        uuid = it.vehicleId,
                         name = it.name,
-                        typeUuid = it.vehicleTypeId,
                         isDisabled = it.isDisabled,
                         isReserved = it.isReserved,
                         isRented = it.isRented,
                         lat = it.lat,
-                        lon = it.lon
+                        lon = it.lon,
+                        uuid = it.vehicleId,
+                        typeUuid = it.vehicleTypeId
                 )
         }
 }

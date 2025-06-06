@@ -38,6 +38,10 @@
             android:name=".presentation.bikes.BikeListActivity"
             android:exported="false"
             android:theme="@style/Theme.Patinfly" />
+        <activity
+            android:name=".presentation.bikes.BikeDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Patinfly" />
 
     </application>
 

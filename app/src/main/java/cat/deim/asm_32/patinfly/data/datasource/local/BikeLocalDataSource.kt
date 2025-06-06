@@ -1,58 +1,68 @@
-/*package cat.deim.asm_32.patinfly.data.datasource.local
+package cat.deim.asm_32.patinfly.data.datasource.local
 
-import android.annotation.SuppressLint
+/*import android.annotation.SuppressLint
 import android.content.Context
 import cat.deim.asm_32.patinfly.data.datasource.IBikeDataSource
-import cat.deim.asm_32.patinfly.data.datasource.model.BikeModel
+import cat.deim.asm_32.patinfly.data.datasource.remote.BikesResponse
+import cat.deim.asm_32.patinfly.domain.models.Bike
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.json.Json
 import java.io.IOException
 import java.io.InputStreamReader
 
-class BikeLocalDataSource private constructor():IBikeDataSource {
+class BikeLocalDataSource private constructor() : IBikeDataSource {
+
     companion object {
         @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: BikeLocalDataSource? = null
-        fun getInstance(context: Context)=
+
+        fun getInstance(context: Context) =
             instance ?: synchronized(this) {
                 instance ?: BikeLocalDataSource().also {
+                    it.context = context
                     instance = it
-                    it.context=context
                 }
             }
     }
-    private var bicis:MutableList<BikeModel> =mutableListOf()
-    private var context:Context?=null
-    fun loadBikeData() {
+
+    private var bicis: MutableList<Bike> = mutableListOf()
+    private var context: Context? = null
+
+    override fun getAll(): List<Bike> {
+        if (bicis.isEmpty()) {
+            loadBikeData()
+        }
+        return bicis
+    }
+
+    private fun loadBikeData() {
         try {
-            context?.assets?.open("bikes.json").use { inputStream ->
+            context?.assets?.open("bikes.json")?.use { inputStream ->
                 InputStreamReader(inputStream).use { reader ->
                     val json = reader.readText()
-                    bicis = parseJson(json)?.toMutableList()?: mutableListOf()
+                    bicis = parseJson(json)?.toMutableList() ?: mutableListOf()
                 }
             }
         } catch (e: IOException) {
             e.printStackTrace()
         }
     }
-    private fun parseJson(json: String): List<BikeModel>? {
-        val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-            .create()
 
+    private fun parseJson(json: String): List<Bike>? {
         return try {
-            data class BikeListResponse(
-                @SerializedName("bike") val bikes: List<BikeModel>?
-            )
-            val response = gson.fromJson(json, BikeListResponse::class.java)
-            response.bikes ?: emptyList()
+            val bikesResponse = Json {
+                ignoreUnknownKeys = true // Por si el JSON tiene campos no mapeados
+            }.decodeFromString<BikesResponse>(json)
+            bikesResponse.toDomain()
         } catch (e: Exception) {
             e.printStackTrace()
             null
         }
     }
-    override fun insert(bike:BikeModel):Boolean{
+}
+    /*override fun insert(bike:BikeModel):Boolean{
         bicis.add(bike)
         return true
     }
@@ -83,5 +93,5 @@ class BikeLocalDataSource private constructor():IBikeDataSource {
         val elim = bicis.any {it.uuid == uuid }
         bicis.removeIf { it.uuid == uuid}
         return elim
-    }
-}*/
+    }*/
+*/

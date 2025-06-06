@@ -12,7 +12,6 @@ import com.google.gson.GsonBuilder
 class BikeRepository(
     private val bikeDao: BikeDatasource,
     private val apiService: APIService,
-    private val token: String
     ) : IBikeRepository {
 
     override suspend fun insert(bike: Bike): Boolean {
@@ -31,12 +30,12 @@ class BikeRepository(
         }
     }*/
 
-    override suspend fun getAll(): Collection<Bike> {
+    override suspend fun getAll(token: String): Collection<Bike> {
         val dbBikes = bikeDao.getAll()
         return if (dbBikes.isNotEmpty()) {
             dbBikes.map { it.toDomain() }
-        } else {
-            val response = apiService.getVehicles(token)
+        } else/* {
+            *val response = apiService.getVehicles(token)
             val gson = GsonBuilder().setPrettyPrinting().create()
             val jsonString = gson.toJson(response)
 
@@ -46,12 +45,12 @@ class BikeRepository(
             if (bikes.isNotEmpty()) {
                 bikeDao.insertAll(bikes.map { BikeDTO.fromDomain(it) })
                 return bikes
-            } else {
+            } else*/ {
                 return emptyList()
             }
         }
 
-    }
+    //}
 
     override suspend fun update(bike: Bike): Boolean {
         val dto = BikeDTO.fromDomain(bike)

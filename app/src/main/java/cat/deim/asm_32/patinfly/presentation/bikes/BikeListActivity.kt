@@ -22,24 +22,24 @@ import android.content.Context
 class BikeListActivity : ComponentActivity() {
 
     private val TAG = BikeListActivity::class.java.simpleName
+    private lateinit var viewModel: BikeListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Log.d(TAG, "BikeListActivity onCreate")
 
-        //val dataSource = BikeLocalDataSource.getInstance(applicationContext)
         val bikeDao = AppDatabase.getDatabase(applicationContext).bikeDatasource()
         val apiService = BikeAPIDataSource.getService()
         val sharedPrefs = getSharedPreferences("session", Context.MODE_PRIVATE)
         val token = sharedPrefs.getString("token", null)
         if (token != null){
-            val repository = BikeRepository(bikeDao, apiService, token)
-            val useCase = BikeListUseCase(repository)
+            val repository = BikeRepository(bikeDao, apiService)
+            val useCase = BikeListUseCase(repository, token)
 
             Log.d(TAG, "Creant viewModel Bike...")
 
-            val viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return BikeListViewModel(useCase) as T
                 }
@@ -64,5 +64,9 @@ class BikeListActivity : ComponentActivity() {
             }
             Log.d(TAG, "After setContent Execution")
         }
+    }
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadBikes()  // <-- recarga lista cuando vuelves a esta activity
     }
 }

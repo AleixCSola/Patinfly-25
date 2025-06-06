@@ -5,6 +5,8 @@
     <string name="bike_details_title">Detalls bici</string>
     <string name="available">Disponible</string>
     <string name="not_available">No disponible</string>
+    <string name="reserved">Reservat</string>
+    <string name="rented">Alquilat</string>
     <string name="type">Tipo:</string>
     <string name="battery">Bateria:</string>
     <string name="distance">Distancia:</string>
@@ -27,4 +29,5 @@
     <string name="device_id_label">Device ID:</string>
     <string name="created_label">Created:</string>
     <string name="last_connection_label">Last Connection:</string>
+    <string name="bike_detail_title">Detalls de la bici</string>
 </resources>

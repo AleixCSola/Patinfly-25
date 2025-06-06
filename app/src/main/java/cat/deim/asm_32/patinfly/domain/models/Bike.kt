@@ -10,7 +10,8 @@ data class Bike(
     val isReserved: Boolean,
     val isRented: Boolean,
     val lat: Double,
-    val lon: Double
+    val lon: Double,
+    val userId: String? = null
     /* lastMaintenanceDate: Date?,
     val batteryLvl: Double =100.0,
     val creationDate: Date,

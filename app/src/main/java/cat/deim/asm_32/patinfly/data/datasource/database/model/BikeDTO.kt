@@ -16,7 +16,8 @@ data class BikeDTO(
     val isReserved: Boolean,
     val isRented: Boolean,
     val lat: Double,
-    val lon: Double
+    val lon: Double,
+    val userId: String? = null
     //val creationDate: Date,
     //val lastMaintenanceDate: Date?,
     //val batteryLvl: Double,
@@ -33,7 +34,8 @@ data class BikeDTO(
             isReserved          = bike.isReserved,
             isRented            = bike.isRented,
             lat                 = bike.lat,
-            lon                 = bike.lon
+            lon                 = bike.lon,
+            userId              = bike.userId
             /*typeName            = bike.type.name,
             typeType            = bike.type.type,
             creationDate        = bike.creationDate,
@@ -52,7 +54,8 @@ data class BikeDTO(
         isReserved          = isReserved,
         isRented            = isRented,
         lat                 = lat,
-        lon                 = lon
+        lon                 = lon,
+        userId              = userId
 
         /*creationDate        = creationDate,
         lastMaintenanceDate = lastMaintenanceDate,

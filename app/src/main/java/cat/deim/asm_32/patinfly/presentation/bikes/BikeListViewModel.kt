@@ -19,7 +19,7 @@ class BikeListViewModel(
         loadBikes()
     }
 
-    private fun loadBikes() {
+    fun loadBikes() {
         viewModelScope.launch {
             bicis.value = useCase.execute()
         }
