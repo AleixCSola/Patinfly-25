@@ -1,72 +1,44 @@
 package cat.deim.asm_32.patinfly.data.datasource.remote;
 
 import cat.deim.asm_32.patinfly.domain.models.Bike
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
-data class Vehicle(
-        @SerialName(value = "name")
-        val name: String,
-
-        @SerialName(value = "is_disabled")
-        val isDisabled: Boolean,
-
-        @SerialName(value = "is_reserved")
-        val isReserved: Boolean,
-
-        @SerialName(value = "is_rented")
-        val isRented: Boolean,
-
-        @SerialName(value = "last_reported")
-        val lastReported: String,
-
-        @SerialName(value = "lat")
-        val lat: Double,
-
-        @SerialName(value = "lon")
-        val lon: Double,
-
-        @SerialName(value = "rental_uris")
-        val rentalUris: RentalUris,
-
-        @SerialName(value = "vehicle_id")
-        val vehicleId: String,
-
-        @SerialName(value = "vehicle_type_id")
-        val vehicleTypeId: String,
-
-        @SerialName(value = "group_course")
-        val groupCourse: String
-)
-
-@Serializable
-data class RentalUris(
-        @SerialName(value = "android")
-        val android: String,
-
-        @SerialName(value = "ios")
-        val ios: String
-)
-
-@Serializable
 data class BikesResponse(
-        @SerialName(value = "vehicles")
-        val vehicles: List<Vehicle>,
-        @SerialName(value = "version")
-        val version: String
-) {
-        fun toDomain(): List<Bike> = vehicles.map {
+        @SerializedName("vehicles") val vehicles: List<Vehicle>,
+        @SerializedName("version") val version: String
+)
+
+data class Vehicle(
+        @SerializedName("name") val name: String,
+        @SerializedName("is_disabled") val isDisabled: Boolean,
+        @SerializedName("is_reserved") val isReserved: Boolean,
+        @SerializedName("is_rented") val isRented: Boolean,
+        @SerializedName("last_reported") val lastReported: String,
+        @SerializedName("lat") val latitude: Double,
+        @SerializedName("lon") val longitude: Double,
+        @SerializedName("rental_uris") val rentalUris: RentalUris,
+        @SerializedName("vehicle_id") val vehicleId: String,
+        @SerializedName("vehicle_type_id") val vehicleTypeId: String,
+        @SerializedName("group_course") val groupCourse: String
+)
+
+data class RentalUris(
+        @SerializedName("android") val android: String,
+        @SerializedName("ios") val ios: String
+)
+
+fun List<Vehicle>.toDomain(): List<Bike> {
+        return this.map { vehicle ->
                 Bike(
-                        name = it.name,
-                        isDisabled = it.isDisabled,
-                        isReserved = it.isReserved,
-                        isRented = it.isRented,
-                        lat = it.lat,
-                        lon = it.lon,
-                        uuid = it.vehicleId,
-                        typeUuid = it.vehicleTypeId
+                        uuid = vehicle.vehicleId,
+                        name = vehicle.name,
+                        typeUuid = vehicle.vehicleTypeId,
+                        isDisabled = vehicle.isDisabled,
+                        isReserved = vehicle.isReserved,
+                        isRented = vehicle.isRented,
+                        lat = vehicle.latitude,
+                        lon = vehicle.longitude,
+                        userId = null
                 )
         }
 }
-

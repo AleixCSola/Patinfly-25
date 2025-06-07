@@ -7,6 +7,7 @@ import cat.deim.asm_32.patinfly.data.datasource.database.BikeDatasource
 import cat.deim.asm_32.patinfly.data.datasource.database.model.BikeDTO
 import cat.deim.asm_32.patinfly.data.datasource.remote.APIService
 import cat.deim.asm_32.patinfly.data.datasource.remote.BikesResponse
+import cat.deim.asm_32.patinfly.data.datasource.remote.toDomain
 import com.google.gson.GsonBuilder
 
 class BikeRepository(
@@ -34,23 +35,23 @@ class BikeRepository(
         val dbBikes = bikeDao.getAll()
         return if (dbBikes.isNotEmpty()) {
             dbBikes.map { it.toDomain() }
-        } else/* {
-            *val response = apiService.getVehicles(token)
+        } else {
+            val response = apiService.getVehicles(token)
             val gson = GsonBuilder().setPrettyPrinting().create()
             val jsonString = gson.toJson(response)
 
             Log.d("API_RESPONSE", jsonString)
-            val bikes = response.toDomain()
+            val bikes = response.vehicles.toDomain()
 
             if (bikes.isNotEmpty()) {
                 bikeDao.insertAll(bikes.map { BikeDTO.fromDomain(it) })
                 return bikes
-            } else*/ {
+            } else {
                 return emptyList()
             }
         }
 
-    //}
+    }
 
     override suspend fun update(bike: Bike): Boolean {
         val dto = BikeDTO.fromDomain(bike)
