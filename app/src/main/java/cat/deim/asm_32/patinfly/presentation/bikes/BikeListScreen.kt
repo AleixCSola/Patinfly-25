@@ -1,5 +1,6 @@
 package cat.deim.asm_32.patinfly.presentation.bikes
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -96,6 +97,17 @@ fun BikeListScreen(
 @Composable
 fun EachBike(bici: Bike) {
     val context = LocalContext.current
+    val sharedPrefs = context.getSharedPreferences("session", Context.MODE_PRIVATE)
+    val userId = sharedPrefs.getString("uuid", "") ?: ""
+
+    val (statusText, statusColor) = when {
+        bici.isDisabled -> "No disponible" to Color.Red
+        bici.isRented && bici.userId == userId -> "Alquilada per mi" to Color.Yellow
+        bici.isRented && bici.userId != userId -> "Alquilada" to Color.Red
+        bici.isReserved && bici.userId == userId -> "Reservada per mi" to Color(0xFF448AFF)
+        bici.isReserved && bici.userId != userId -> "Reservada" to Color.Red
+        else -> "Disponible" to Color.Green
+    }
 
     Card(
         modifier = Modifier
@@ -126,18 +138,8 @@ fun EachBike(bici: Bike) {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = when {
-                        bici.isDisabled -> stringResource(R.string.not_available)
-                        bici.isRented -> stringResource(R.string.rented)
-                        bici.isReserved -> stringResource(R.string.reserved)
-                        else -> stringResource(R.string.available)
-                    },
-                    color = when {
-                        bici.isDisabled -> Color.Red
-                        bici.isRented -> Color.Red
-                        bici.isReserved -> Color.Yellow
-                        else -> Color.Green
-                    }
+                    text = statusText,
+                    color = statusColor
                 )
             }
 

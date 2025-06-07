@@ -1,0 +1,25 @@
+package cat.deim.asm_32.patinfly.domain.usecase
+
+import cat.deim.asm_32.patinfly.domain.repository.IBikeRepository
+
+class BikeRentDetailUseCase(private val bikeRepository: IBikeRepository) {
+
+    suspend fun toggleRent(bikeUuid: String, userId: String): Boolean {
+        val bike = bikeRepository.getById(bikeUuid) ?: return false
+
+        val isUserCurrentlyRenting = bike.isRented && bike.userId == userId
+
+        val updatedBike = bike.copy(
+            isRented = !isUserCurrentlyRenting,
+            userId = if (isUserCurrentlyRenting) null else userId,
+            isReserved = false
+        )
+
+        return bikeRepository.update(updatedBike)
+    }
+
+    suspend fun isBikeRentedByUser(bikeUuid: String, userId: String): Boolean {
+        val bike = bikeRepository.getById(bikeUuid) ?: return false
+        return bike.isRented && bike.userId == userId
+    }
+}

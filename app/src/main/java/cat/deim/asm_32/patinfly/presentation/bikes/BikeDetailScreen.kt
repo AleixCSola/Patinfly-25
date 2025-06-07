@@ -2,6 +2,7 @@ package cat.deim.asm_32.patinfly.presentation.bikes
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -110,6 +111,8 @@ fun BikeDetailScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Botón reservar / cancelar reserva
+                val isMyReservation = bike.isReserved && bike.userId == userId
+
                 Button(
                     onClick = {
                         viewModel.toggleReservation(userId)
@@ -118,7 +121,11 @@ fun BikeDetailScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (canReserve) Color(0xFF448AFF) else Color.LightGray,
+                        containerColor = when {
+                            !canReserve -> Color.LightGray
+                            isMyReservation -> Color(0xFFFFEB3B)
+                            else -> Color(0xFF448AFF)
+                        },
                         contentColor = Color.White
                     )
                 ) {
@@ -127,19 +134,29 @@ fun BikeDetailScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                val isRentedByUser = bike.isRented && bike.userId == userId
+
                 Button(
                     onClick = {
-
+                        val intent = Intent(context, BikeRentDetailActivity::class.java).apply {
+                            putExtra("bike_uuid", bike.uuid)
+                            putExtra("user_id", userId) // si necesitas pasar el userId
+                        }
+                        context.startActivity(intent)
                     },
-                    enabled = canRent,
+                    enabled = canRent || isRentedByUser,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (canRent) Color(0xFF2E7D32) else Color.LightGray,
+                        containerColor = when {
+                            isRentedByUser -> Color.Red
+                            canRent -> Color(0xFF2E7D32)
+                            else -> Color.LightGray
+                        },
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Alquilar")
+                    Text(if (isRentedByUser) "Aturar alquiler" else "Alquilar")
                 }
             }
         }
