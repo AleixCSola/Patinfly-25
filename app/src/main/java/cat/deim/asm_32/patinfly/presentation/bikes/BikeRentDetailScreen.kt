@@ -3,15 +3,19 @@ package cat.deim.asm_32.patinfly.presentation.bikes
 import android.app.Activity
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,6 +31,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -41,6 +46,8 @@ fun BikeRentDetailScreen(viewModel: BikeRentDetailViewModel) {
     val rentToggled by viewModel.rentToggled.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val isRentedByUser by viewModel.isRentedByUser.collectAsState()
+    val bike by viewModel.bike.collectAsState()
+    val pricingPlan by viewModel.pricingPlan.collectAsState()
 
     val context = LocalContext.current
     val activity = context as? Activity
@@ -58,14 +65,14 @@ fun BikeRentDetailScreen(viewModel: BikeRentDetailViewModel) {
             context.startActivity(intent)
 
         } else if (rentToggled == false) {
-            Toast.makeText(context, "Error en la acció", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Error en l'acció", Toast.LENGTH_SHORT).show()
         }
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Detall de l'Alquiler") },
+                title = { Text("Detalls del lloguer") },
                 navigationIcon = {
                     IconButton(onClick = { activity?.finish() }) {
                         Icon(
@@ -81,10 +88,34 @@ fun BikeRentDetailScreen(viewModel: BikeRentDetailViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            bike?.let { b ->
+                Image(
+                    painter = painterResource(id = R.drawable.bike_card), // O tu imagen real
+                    contentDescription = "Foto de la bici",
+                    modifier = Modifier
+                        .height(200.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "id: ${b.uuid}")
+                Text(text = "Tipus bici: ${b.typeUuid}")
+                Text(text = "Latitud: ${b.lat}")
+                Text(text = "Longitud: ${b.lon}")
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            pricingPlan?.let { plan ->
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("Pla de preus: ${plan.dataPlan.name.text}")
+                Text("Descripció: ${plan.dataPlan.description.text}")
+            }
+
             Button(
                 onClick = { viewModel.toggleRent() },
                 enabled = !isLoading,
@@ -103,7 +134,7 @@ fun BikeRentDetailScreen(viewModel: BikeRentDetailViewModel) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-                Text(if (isRentedByUser) "Aturar lloguer" else "Iniciar lloguer")
+                Text(if (isRentedByUser) "Confirmar aturar lloguer" else "Confirmar iniciar lloguer")
             }
         }
     }

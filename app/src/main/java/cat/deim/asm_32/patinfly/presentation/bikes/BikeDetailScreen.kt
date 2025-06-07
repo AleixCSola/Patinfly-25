@@ -55,9 +55,9 @@ fun BikeDetailScreen(
 
         val statusText = when {
             bike.isReserved && bike.userId == userId -> "Reservada per mi"
-            bike.isReserved && bike.userId != userId -> "Algú ja ha fet la reserva"
-            bike.isRented && bike.userId == userId -> "Alquilada per mi"
-            bike.isRented && bike.userId != userId -> "Algú ja l'ha alquilat"
+            bike.isReserved && bike.userId != userId -> "Algú altre ja ha fet la reserva"
+            bike.isRented && bike.userId == userId -> "Llogada per mi"
+            bike.isRented && bike.userId != userId -> "Algú altre ja l'ha llogat"
             else -> "Disponible"
         }
 
@@ -156,7 +156,7 @@ fun BikeDetailScreen(
                         contentColor = Color.White
                     )
                 ) {
-                    Text(if (isRentedByUser) "Aturar alquiler" else "Alquilar")
+                    Text(if (isRentedByUser) "Aturar lloguer" else "Llogar")
                 }
             }
         }

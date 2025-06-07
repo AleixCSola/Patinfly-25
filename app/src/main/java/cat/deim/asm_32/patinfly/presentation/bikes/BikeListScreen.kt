@@ -102,8 +102,8 @@ fun EachBike(bici: Bike) {
 
     val (statusText, statusColor) = when {
         bici.isDisabled -> "No disponible" to Color.Red
-        bici.isRented && bici.userId == userId -> "Alquilada per mi" to Color.Yellow
-        bici.isRented && bici.userId != userId -> "Alquilada" to Color.Red
+        bici.isRented && bici.userId == userId -> "Llogada per mi" to Color.Yellow
+        bici.isRented && bici.userId != userId -> "Llogada" to Color.Red
         bici.isReserved && bici.userId == userId -> "Reservada per mi" to Color(0xFF448AFF)
         bici.isReserved && bici.userId != userId -> "Reservada" to Color.Red
         else -> "Disponible" to Color.Green
