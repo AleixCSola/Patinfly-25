@@ -1,5 +1,6 @@
 package cat.deim.asm_32.patinfly.data.repository
 
+import android.util.Log
 import cat.deim.asm_32.patinfly.data.datasource.ISystemPricingPlanDataSource
 import cat.deim.asm_32.patinfly.data.datasource.model.SystemPricingPlanModel
 import cat.deim.asm_32.patinfly.domain.models.SystemPricingPlan
@@ -19,11 +20,13 @@ class SystemPricingPlanRepository(
     override suspend fun getById(planId: String): SystemPricingPlan? {
         val planInDb = dao.getById(planId)
         if (planInDb != null) return planInDb.toDomain()
-        //else
-        val localPlan = localDataSource.getById(planId)
-        return localPlan?.let {
-            dao.insert(SystemPricingPlanDTO.fromDomain(it.toDomain()))
-            it.toDomain()
+        else {
+            val localPlan = localDataSource.getById(planId)
+            Log.d("SystemPricingPlanRepository", "localPlan: $localPlan")
+            return localPlan?.let { planModel ->
+                dao.insert(SystemPricingPlanDTO.fromDomain(planModel.toDomain()))
+                planModel.toDomain()
+            }
         }
     }
 

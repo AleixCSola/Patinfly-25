@@ -57,22 +57,6 @@ class MainActivity : ComponentActivity() {
             type = "EB001"
         )
 
-        val ejemploPlan = SystemPricingPlan(
-            lastUpdated = "2024-02-27T12:34:56Z",
-            ttl = "24h",
-            version = "1.0",
-            dataPlan = Information(
-                planId = "plan2025",
-                name = TextType("Patinfly Bike Pricing Test", "en"),
-                currency = "EUR",
-                price = 1.00,
-                isTaxable = true,
-                description = TextType("1€ unlock fee, 0€ per kilometer and 0.25 per minute.", "en"),
-                perKmPricing = PerKmPricing(0.0, 0.0, 1.0),
-                perMinPricing = PerMinPricing(0.0, 0.25, 1.0)
-            )
-        )
-
         val db = AppDatabase.getDatabase(applicationContext)
 
         val bikeDao = db.bikeDatasource()
@@ -83,18 +67,6 @@ class MainActivity : ComponentActivity() {
         val pricingPlanRepository = SystemPricingPlanRepository(planDao, planLocalDataSource)
         BikeAPIDataSource.getInstance(applicationContext)
         val bikeRepository = BikeRepository(bikeDao, BikeAPIDataSource.getService())
-
-        lifecycleScope.launch {
-            /*userRepository.setUser(ejemploUsu)
-            val usuario = userRepository.getById(ejemploUsu.uuid)
-            Log.d("MainActivity", "Usuari: ${usuario?.name}")*/
-
-            planLocalDataSource.loadPricingData()
-            pricingPlanRepository.insert(ejemploPlan)
-            val plan = pricingPlanRepository.getById(ejemploPlan.dataPlan.planId)
-            Log.d("MainActivity", "Plan: ${plan?.dataPlan?.name?.text}")
-
-        }
 
     }
 

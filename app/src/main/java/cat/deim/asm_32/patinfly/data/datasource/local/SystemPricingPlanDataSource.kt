@@ -2,7 +2,9 @@ package cat.deim.asm_32.patinfly.data.datasource.local
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import cat.deim.asm_32.patinfly.data.datasource.ISystemPricingPlanDataSource
+import cat.deim.asm_32.patinfly.data.datasource.model.DataModel
 import cat.deim.asm_32.patinfly.data.datasource.model.SystemPricingPlanModel
 import java.io.IOException
 import java.io.InputStreamReader
@@ -52,7 +54,12 @@ class SystemPricingPlanDataSource private constructor(): ISystemPricingPlanDataS
         return true
     }
     override fun getById(planId: String): SystemPricingPlanModel? {
-        return pricingPlan?.takeIf { it.dataPlan.planId == planId }
+        loadPricingData()
+        Log.d("LocalDataSource", "pricingPlan loaded: $pricingPlan")
+        val plan = pricingPlan?.data?.plans?.find { it.planId == planId }
+        Log.d("LocalDataSource", "Found plan for id $planId: $plan")
+        if (plan == null) return null
+        return pricingPlan?.copy(data = DataModel(plans = listOf(plan)))
     }
 
     override fun update(plan: SystemPricingPlanModel): SystemPricingPlanModel? {
@@ -62,11 +69,12 @@ class SystemPricingPlanDataSource private constructor(): ISystemPricingPlanDataS
     }
 
     override fun delete(planId: String): Boolean {
-        return if (pricingPlan?.dataPlan?.planId == planId) {
+        /*return if (pricingPlan?.dataPlan?.planId == planId) {
             pricingPlan = null
             true
         } else {
             false
-        }
+        }*/
+        return true
     }
 }
