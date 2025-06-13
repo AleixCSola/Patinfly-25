@@ -32,14 +32,14 @@ class BikeDetailViewModel(
     fun toggleReservation(userId: String) {
         val currentBike = _bike.value ?: return
 
-        val updatedBike = if (currentBike.isReserved && currentBike.userId == userId) {
-            currentBike.copy(isReserved = false, userId = null)
+        val (updatedBike, operacio) = if (currentBike.isReserved && currentBike.userId == userId) {
+            currentBike.copy(isReserved = false, userId = null) to 1
         } else {
-            currentBike.copy(isReserved = true, userId = userId)
+            currentBike.copy(isReserved = true, userId = userId) to 0
         }
 
         viewModelScope.launch {
-            updateBikeUseCase(updatedBike)
+            updateBikeUseCase(updatedBike, operacio)
             _bike.value = updatedBike
         }
     }

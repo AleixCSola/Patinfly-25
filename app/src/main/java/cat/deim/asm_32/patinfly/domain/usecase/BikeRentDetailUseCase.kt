@@ -5,11 +5,9 @@ import cat.deim.asm_32.patinfly.domain.models.SystemPricingPlan
 import cat.deim.asm_32.patinfly.domain.repository.IBikeRepository
 import cat.deim.asm_32.patinfly.domain.repository.ISystemPricingPlanRepository
 
-class BikeRentDetailUseCase(private val bikeRepository: IBikeRepository,
-                            private val pricingPlanRepository: ISystemPricingPlanRepository
-) {
+class BikeRentDetailUseCase(private val bikeRepository: IBikeRepository, private val pricingPlanRepository: ISystemPricingPlanRepository, private val token: String) {
 
-    suspend fun toggleRent(bikeUuid: String, userId: String): Boolean {
+    suspend fun toggleRent(bikeUuid: String, userId: String, token: String): Boolean {
         val bike = bikeRepository.getById(bikeUuid) ?: return false
 
         val isUserCurrentlyRenting = bike.isRented && bike.userId == userId
@@ -20,7 +18,8 @@ class BikeRentDetailUseCase(private val bikeRepository: IBikeRepository,
             isReserved = false
         )
 
-        return bikeRepository.update(updatedBike)
+        val operacio = if (isUserCurrentlyRenting) 3 else 2
+        return bikeRepository.update(updatedBike, operacio, token)
     }
 
     suspend fun isBikeRentedByUser(bikeUuid: String, userId: String): Boolean {

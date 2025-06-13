@@ -6,7 +6,6 @@ import cat.deim.asm_32.patinfly.domain.repository.IBikeRepository
 import cat.deim.asm_32.patinfly.data.datasource.database.BikeDatasource
 import cat.deim.asm_32.patinfly.data.datasource.database.model.BikeDTO
 import cat.deim.asm_32.patinfly.data.datasource.remote.APIService
-import cat.deim.asm_32.patinfly.data.datasource.remote.BikesResponse
 import cat.deim.asm_32.patinfly.data.datasource.remote.toDomain
 import com.google.gson.GsonBuilder
 
@@ -19,17 +18,6 @@ class BikeRepository(
         val dto = BikeDTO.fromDomain(bike)
         return bikeDao.insert(dto) > 0
     }
-
-    /*override suspend fun loadLocalData() {
-        if (bikeLocalDataSource is BikeLocalDataSource) {
-            bikeLocalDataSource.loadBikeData()
-        }
-        val localBikes = bikeLocalDataSource.getAll()
-        if (localBikes.isNotEmpty()) {
-            bikeDao.insertAll(localBikes.map { BikeDTO.fromDomain(it.toDomain()) })
-            localBikes.map { it.toDomain() }
-        }
-    }*/
 
     override suspend fun getAll(token: String): Collection<Bike> {
         val dbBikes = bikeDao.getAll()
@@ -53,9 +41,20 @@ class BikeRepository(
 
     }
 
-    override suspend fun update(bike: Bike): Boolean {
-        val dto = BikeDTO.fromDomain(bike)
-        return bikeDao.update(dto) > 0
+    override suspend fun update(bike: Bike, operacio: Int, token: String): Boolean {
+        val operacioOk = when (operacio) {
+            0 -> reserve(bike, token)
+            1 -> release(bike, token)
+            2 -> start(bike, token)
+            3 -> stop(bike, token)
+            else -> false
+        }
+
+        if (!operacioOk) return false
+        else {
+            val dto = BikeDTO.fromDomain(bike)
+            return bikeDao.update(dto) > 0
+        }
     }
 
     override suspend fun getById(uuid: String): Bike? {
@@ -70,5 +69,57 @@ class BikeRepository(
 
     override suspend fun delete(uuid: String): Boolean {
         return bikeDao.delete(uuid) > 0
+    }
+
+    private suspend fun reserve(bike: Bike, token: String): Boolean {
+        return try {
+            val response = apiService.doReserve("Bearer $token", bike.uuid)
+
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            val jsonString = gson.toJson(response)
+            Log.d("API_RESPONSE", jsonString)
+
+            response.success
+        } catch (e: Exception) {
+            Log.e("API_ERROR", "Reserva fallida", e)
+            false
+        }
+    }
+
+    private suspend fun release(bike: Bike, token: String): Boolean {
+        return try {
+            val response = apiService.doRelease("Bearer $token", bike.uuid)
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            val jsonString = gson.toJson(response)
+            Log.d("API_RESPONSE", jsonString)
+            response.success
+        } catch (e: Exception) {
+            Log.e("API_ERROR", "Alliberació fallida", e)
+            false
+        }
+    }
+
+    private suspend fun start(bike: Bike, token: String): Boolean {
+        return try {
+            val response = apiService.doStart("Bearer $token", bike.uuid)
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            Log.d("API_RESPONSE", gson.toJson(response))
+            response.success
+        } catch (e: Exception) {
+            Log.e("API_ERROR", "Start fallido", e)
+            false
+        }
+    }
+
+    private suspend fun stop(bike: Bike, token: String): Boolean {
+        return try {
+            val response = apiService.doStop("Bearer $token", bike.uuid)
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            Log.d("API_RESPONSE", gson.toJson(response))
+            response.success
+        } catch (e: Exception) {
+            Log.e("API_ERROR", "Stop fallido", e)
+            false
+        }
     }
 }

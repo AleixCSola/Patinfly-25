@@ -36,10 +36,12 @@ class BikeDetailActivity : ComponentActivity() {
         val apiService = BikeAPIDataSource.getService()
         val bikeRepository = BikeRepository(bikeDao, apiService)
         val bikeUuid = intent.getStringExtra("bike_uuid") ?: ""
+        val sharedPrefs = getSharedPreferences("session", Context.MODE_PRIVATE)
+        val token = sharedPrefs.getString("token", null) ?: ""
         BikeDetailViewModelFactory(
             bikeUuid,
             BikeDetailUseCase(bikeRepository),
-            UpdateBikeUseCase(bikeRepository)
+            UpdateBikeUseCase(bikeRepository, token)
         )
     }
 
