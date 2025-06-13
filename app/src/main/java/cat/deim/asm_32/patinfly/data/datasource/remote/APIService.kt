@@ -49,4 +49,7 @@ interface APIService {
         @Path("uuid") uuid: String,
         @Header("Origin") origin: String = ""
     ): StopResponse
+
+    @GET("rent")
+    suspend fun getRentalHistory(@Header("Authorization") token: String): List<RentalResponse?>
 }

@@ -6,10 +6,13 @@ import cat.deim.asm_32.patinfly.domain.models.User
 import cat.deim.asm_32.patinfly.domain.repository.IUserRepository
 import cat.deim.asm_32.patinfly.data.datasource.database.UserDatasource
 import cat.deim.asm_32.patinfly.data.datasource.database.model.UserDTO
+import cat.deim.asm_32.patinfly.data.datasource.remote.APIService
+import cat.deim.asm_32.patinfly.data.datasource.remote.RentalResponse
 
 
 class UserRepository(
-    private val userDao: UserDatasource
+    private val userDao: UserDatasource,
+    private val apiService: APIService,
 ) : IUserRepository {
 
     override suspend fun setUser(user: User): Boolean {
@@ -44,5 +47,8 @@ class UserRepository(
     override suspend fun deleteUser(uuid: String): Boolean {
         return userDao.delete(uuid) > 0
     }
-}
 
+    override suspend fun getRentalHistory(token: String): List<RentalResponse> {
+        return apiService.getRentalHistory(token)
+    }
+}
