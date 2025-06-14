@@ -22,6 +22,7 @@ import cat.deim.asm_32.patinfly.data.datasource.remote.BikeAPIDataSource
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        BikeAPIDataSource.getInstance(applicationContext)
         setContent {
             PatinflyTheme {
                 // A surface container using the 'background' color from the theme
@@ -29,11 +30,15 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val apiService = BikeAPIDataSource.getInstance(applicationContext)
+                    val apiService = BikeAPIDataSource.getService()
                     LoginScreen(
-                        LoginUseCase((UserRepository(
-                            AppDatabase.getDatabase(LocalContext.current).userDatasource(),
-                            )), BikeAPIDataSource.getService())
+                        LoginUseCase(
+                            UserRepository(
+                                AppDatabase.getDatabase(LocalContext.current).userDatasource(),
+                                apiService
+                            ),
+                            apiService
+                        )
                     )
                 }
             }

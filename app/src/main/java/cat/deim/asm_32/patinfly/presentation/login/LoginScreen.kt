@@ -15,6 +15,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cat.deim.asm_32.patinfly.R
@@ -49,11 +50,12 @@ fun LoginScreen(loginUsecase: LoginUseCase?) {
                     },)
             }
             Row(modifier = Modifier.padding(vertical = 8.dp)) {
-                TextField(value = credentials.password,
+                TextField(
+                    value = credentials.password,
                     label = { Text(text = "Password") },
-                    onValueChange = {
-                            data -> credentials = credentials.copy(password = data)
-                    },)
+                    onValueChange = { data -> credentials = credentials.copy(password = data) },
+                    visualTransformation = PasswordVisualTransformation()
+                )
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally){
                 Row {
@@ -81,11 +83,4 @@ fun LoginScreen(loginUsecase: LoginUseCase?) {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun UserLoginFormPreview() {
-    LoginScreen(LoginUseCase((UserRepository(AppDatabase.getDatabase(LocalContext.current).userDatasource(),
-        )), BikeAPIDataSource.getService()))
 }

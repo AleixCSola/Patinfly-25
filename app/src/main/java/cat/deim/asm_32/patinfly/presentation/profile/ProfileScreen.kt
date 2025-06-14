@@ -18,11 +18,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.app.ActivityCompat
 import cat.deim.asm_32.patinfly.R
+import cat.deim.asm_32.patinfly.data.datasource.remote.RentalResponse
 import cat.deim.asm_32.patinfly.domain.models.User
+import java.time.Duration
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(usuari: User) {
+fun ProfileScreen(usuari: User, rentalHistory: List<RentalResponse>) {
     val context = LocalContext.current
 
     Scaffold(
@@ -100,6 +107,32 @@ fun ProfileScreen(usuari: User) {
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_long)))
+
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = "Historial d'alquilers",
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+
+                rentalHistory.forEach { rental ->
+                    val preu = calcularPreu(rental.startTime, rental.endTime)
+                    Text(
+                        text = buildString {
+                            append("Comanda: ${rental.rentalId}\n")
+                            append("- Nom bici: ${rental.vehicle.name}\n")
+                            append("- Tipus bici: ${rental.vehicle.vehicleTypeId}\n")
+                            append("- Inici lloguer: ${formatDateTimeHuman(rental.startTime)}\n")
+                            append("- Final lloguer: ${formatDateTimeHuman(rental.endTime)}\n")
+                            append("- Preu: %.2f €".format(preu))
+                        },
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+                }
+            }
         }
     }
 }
@@ -114,4 +147,31 @@ fun DetallesText(label: String, value: String) {
         )
         Text(text = value)
     }
+}
+
+@Composable
+fun calcularPreu(startTime: String, endTime: String): Double {
+    val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+    val start = LocalDateTime.parse(startTime, formatter)
+    val end = LocalDateTime.parse(endTime, formatter)
+
+    val zone = ZoneOffset.UTC
+    val startInstant = start.toInstant(zone)
+    val endInstant = end.toInstant(zone)
+
+    val duration = Duration.between(startInstant, endInstant)
+    val minuts = duration.toMinutes().coerceAtLeast(1)
+
+    val preuDesbloqueig = 1.0
+    val preuPerMinut = 0.25
+    return preuDesbloqueig + (minuts * preuPerMinut)
+}
+
+@Composable
+fun formatDateTimeHuman(dateTimeStr: String): String {
+    val formatterInput = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+    val dateTime = LocalDateTime.parse(dateTimeStr, formatterInput)
+
+    val formatterOutput = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm", Locale.getDefault())
+    return dateTime.format(formatterOutput)
 }

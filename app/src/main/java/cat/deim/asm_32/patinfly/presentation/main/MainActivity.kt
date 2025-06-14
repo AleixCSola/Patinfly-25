@@ -65,9 +65,7 @@ class MainActivity : ComponentActivity() {
 
         val planLocalDataSource = SystemPricingPlanDataSource.getInstance(applicationContext)
         val pricingPlanRepository = SystemPricingPlanRepository(planDao, planLocalDataSource)
-        BikeAPIDataSource.getInstance(applicationContext)
+        val bikeAPIDataSource = BikeAPIDataSource.getInstance(applicationContext)
         val bikeRepository = BikeRepository(bikeDao, BikeAPIDataSource.getService())
-
     }
-
 }

@@ -8,6 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.lifecycle.lifecycleScope
 import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
 import cat.deim.asm_32.patinfly.data.datasource.local.UserLocalDataSource
+import cat.deim.asm_32.patinfly.data.datasource.remote.BikeAPIDataSource
+import cat.deim.asm_32.patinfly.data.datasource.remote.RentalResponse
 import cat.deim.asm_32.patinfly.data.repository.UserRepository
 import cat.deim.asm_32.patinfly.domain.models.User
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
@@ -24,20 +26,26 @@ class ProfileActivity : ComponentActivity() {
 
         val sharedPrefs = getSharedPreferences("session", Context.MODE_PRIVATE)
         val uuid = sharedPrefs.getString("uuid", null)
-
+        val userDao = AppDatabase.getDatabase(applicationContext).userDatasource()
+        val token = sharedPrefs.getString("token", null)
+        val apiService = BikeAPIDataSource.getService()
+        val userRepository = UserRepository(userDao, apiService)
         var user: User? = null
+        var rentalHistory: List<RentalResponse> = emptyList()
 
         lifecycleScope.launch {
             if (uuid != null) {
-                val userDao = AppDatabase.getDatabase(applicationContext).userDatasource()
-                val userRepository = UserRepository(userDao)
                 user = userRepository.getById(uuid)
+            }
+
+            if (token != null) {
+                rentalHistory = userRepository.getRentalHistory("Bearer $token").filterNotNull()
             }
 
             setContent {
                 PatinflyTheme {
                     user?.let {
-                        ProfileScreen(usuari = it)
+                        ProfileScreen(usuari = it, rentalHistory = rentalHistory)
                     }
                 }
             }
