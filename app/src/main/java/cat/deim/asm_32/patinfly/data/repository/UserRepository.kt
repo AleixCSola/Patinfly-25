@@ -12,7 +12,7 @@ import cat.deim.asm_32.patinfly.data.datasource.remote.RentalResponse
 
 class UserRepository(
     private val userDao: UserDatasource,
-    private val apiService: APIService,
+    /*private val apiService: APIService,*/
 ) : IUserRepository {
 
     override suspend fun setUser(user: User): Boolean {
@@ -48,7 +48,7 @@ class UserRepository(
         return userDao.delete(uuid) > 0
     }
 
-    override suspend fun getRentalHistory(token: String): List<RentalResponse> {
+    /*override suspend fun getRentalHistory(token: String): List<RentalResponse?> {
         return apiService.getRentalHistory(token)
-    }
+    }*/
 }

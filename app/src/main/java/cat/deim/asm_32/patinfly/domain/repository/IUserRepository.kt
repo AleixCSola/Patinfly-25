@@ -9,5 +9,5 @@ interface IUserRepository {
     suspend fun getById(uuid: String): User?
     suspend fun updateUser(user: User): Boolean
     suspend fun deleteUser(uuid: String): Boolean
-    suspend fun getRentalHistory(token: String): List<RentalResponse?>
+    /*suspend fun getRentalHistory(token: String): List<RentalResponse?>*/
 }

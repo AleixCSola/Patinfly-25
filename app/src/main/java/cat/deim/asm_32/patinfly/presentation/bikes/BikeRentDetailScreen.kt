@@ -107,6 +107,18 @@ fun BikeRentDetailScreen(viewModel: BikeRentDetailViewModel) {
                 Text(text = "Tipus bici: ${b.typeUuid}")
                 Text(text = "Latitud: ${b.lat}")
                 Text(text = "Longitud: ${b.lon}")
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                BikeMapScreen(
+                    lat = bike!!.lat,
+                    lon = bike!!.lon,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                )
+
                 Spacer(modifier = Modifier.height(16.dp))
             }
 

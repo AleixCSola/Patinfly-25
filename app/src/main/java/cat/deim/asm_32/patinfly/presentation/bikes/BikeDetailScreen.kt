@@ -108,6 +108,17 @@ fun BikeDetailScreen(
                 Text(text = "Longitud: ${bike.lon}")
                 Text(text = "Estat: $statusText")
 
+                Spacer(modifier = Modifier.height(8.dp))
+
+                BikeMapScreen(
+                    lat = bike.lat,
+                    lon = bike.lon,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                )
+
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Botón reservar / cancelar reserva
