@@ -42,20 +42,12 @@ class BikeRentDetailViewModel(
     }
 
     fun toggleRent() {
-        val currentBike = _bike.value ?: return
-        val currentUserId = userId
-
-        val (updatedBike, operacio) = if (currentBike.isRented && currentBike.userId == userId) {
-            currentBike.copy(isRented = false, userId = null) to 3
-        } else {
-            currentBike.copy(isRented = true, userId = userId) to 2
-        }
-
         viewModelScope.launch {
-            updateBikeUseCase(updatedBike, operacio)
-            _bike.value = updatedBike
-            _isRentedByUser.value = updatedBike.isRented && updatedBike.userId == userId
-            _rentToggled.value = true
+            isLoading.value = true
+            val result = rentUseCase.toggleRent(bikeUuid, userId)
+            _rentToggled.value = result
+            _isRentedByUser.value = result == true
+            isLoading.value = false
         }
     }
 }

@@ -2,7 +2,6 @@ package cat.deim.asm_32.patinfly.data.datasource.database
 import cat.deim.asm_32.patinfly.data.datasource.database.model.SystemPricingPlanDTO
 import cat.deim.asm_32.patinfly.data.datasource.database.model.UserDTO
 import cat.deim.asm_32.patinfly.data.datasource.database.model.BikeDTO
-import cat.deim.asm_32.patinfly.data.datasource.database.Converters
 import androidx.room.TypeConverters
 import android.content.Context
 import androidx.room.Database
