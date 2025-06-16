@@ -30,7 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import cat.deim.asm_32.patinfly.domain.models.Bike
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,20 +48,17 @@ fun BikeDetailScreen(
     val activity = context as? Activity
     val sharedPrefs = context.getSharedPreferences("session", Context.MODE_PRIVATE)
     val userId = sharedPrefs.getString("uuid", "") ?: ""
-    Log.d("BikeDetailScreen", "uuid: ${userId}")
-
+    Log.d("BikeDetailScreen", "uuid: $userId")
     bike?.let { bike ->
-
         val statusText = when {
-            bike.isReserved && bike.userId == userId -> "Reservada per mi"
-            bike.isReserved && bike.userId != userId -> "Algú altre ja ha fet la reserva"
-            bike.isRented && bike.userId == userId -> "Llogada per mi"
+            bike.isReserved && bike.userId== userId -> "Reservada per mi"
+            bike.isReserved && bike.userId !=userId -> "Algú altre ja ha fet la reserva"
+            bike.isRented && bike.userId==userId -> "Llogada per mi"
             bike.isRented && bike.userId != userId -> "Algú altre ja l'ha llogat"
             else -> "Disponible"
         }
-
-        val canReserve = !bike.isDisabled && (!bike.isReserved || bike.userId == userId) && !bike.isRented
-        val canRent = (!bike.isDisabled && !bike.isRented && (!bike.isReserved || bike.userId == userId))
+        val canReserve = !bike.isDisabled && (!bike.isReserved || bike.userId==userId) && !bike.isRented
+        val canRent = (!bike.isDisabled && !bike.isRented && (!bike.isReserved || bike.userId==userId))
 
         Scaffold(
             topBar = {

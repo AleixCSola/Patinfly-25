@@ -18,7 +18,6 @@ class BikeRepository(
         val dto = BikeDTO.fromDomain(bike)
         return bikeDao.insert(dto) > 0
     }
-
     override suspend fun getAll(token: String): Collection<Bike> {
         val dbBikes = bikeDao.getAll()
         return if (dbBikes.isNotEmpty()) {
@@ -27,10 +26,8 @@ class BikeRepository(
             val response = apiService.getVehicles(token)
             val gson = GsonBuilder().setPrettyPrinting().create()
             val jsonString = gson.toJson(response)
-
             Log.d("API_RESPONSE", jsonString)
             val bikes = response.vehicles.toDomain()
-
             if (bikes.isNotEmpty()) {
                 bikeDao.insertAll(bikes.map { BikeDTO.fromDomain(it) })
                 return bikes
@@ -40,7 +37,6 @@ class BikeRepository(
         }
 
     }
-
     override suspend fun update(bike: Bike, operacio: Int, token: String): Boolean {
         val operacioOk = when (operacio) {
             0 -> reserve(bike, token)
@@ -49,14 +45,12 @@ class BikeRepository(
             3 -> stop(bike, token)
             else -> false
         }
-
         if (!operacioOk) return false
         else {
             val dto = BikeDTO.fromDomain(bike)
             return bikeDao.update(dto) > 0
         }
     }
-
     override suspend fun getById(uuid: String): Bike? {
         val dbBike = bikeDao.getById(uuid)
         return if (dbBike != null) {
@@ -66,11 +60,9 @@ class BikeRepository(
 
         }
     }
-
     override suspend fun delete(uuid: String): Boolean {
         return bikeDao.delete(uuid) > 0
     }
-
     private suspend fun reserve(bike: Bike, token: String): Boolean {
         return try {
             val response = apiService.doReserve("Bearer $token", bike.uuid)
@@ -85,7 +77,6 @@ class BikeRepository(
             false
         }
     }
-
     private suspend fun release(bike: Bike, token: String): Boolean {
         return try {
             val response = apiService.doRelease("Bearer $token", bike.uuid)

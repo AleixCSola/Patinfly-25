@@ -1,19 +1,13 @@
 package cat.deim.asm_32.patinfly.presentation.bikes
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import android.content.Intent
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import cat.deim.asm_32.patinfly.data.repository.BikeRepository
-import cat.deim.asm_32.patinfly.domain.usecase.BikeListUseCase
 import cat.deim.asm_32.patinfly.ui.theme.PatinflyTheme
-import cat.deim.asm_32.patinfly.presentation.profile.ProfileActivity
 import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
 import cat.deim.asm_32.patinfly.data.datasource.remote.BikeAPIDataSource
 import android.content.Context
@@ -30,7 +24,6 @@ import cat.deim.asm_32.patinfly.domain.usecase.BikeDetailUseCase
 import cat.deim.asm_32.patinfly.domain.usecase.UpdateBikeUseCase
 
 class BikeDetailActivity : ComponentActivity() {
-
     private val bikeDetailViewModel: BikeDetailViewModel by viewModels {
         val bikeDao = AppDatabase.getDatabase(applicationContext).bikeDatasource()
         val apiService = BikeAPIDataSource.getService()
@@ -44,7 +37,6 @@ class BikeDetailActivity : ComponentActivity() {
             UpdateBikeUseCase(bikeRepository, token)
         )
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

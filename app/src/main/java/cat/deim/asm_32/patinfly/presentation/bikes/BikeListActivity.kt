@@ -21,14 +21,12 @@ import android.content.Context
 
 class BikeListActivity : ComponentActivity() {
 
-    private val TAG = BikeListActivity::class.java.simpleName
+    private val tag = BikeListActivity::class.java.simpleName
     private lateinit var viewModel: BikeListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Log.d(TAG, "BikeListActivity onCreate")
-
+        Log.d(tag, "BikeListActivity onCreate")
         val bikeDao = AppDatabase.getDatabase(applicationContext).bikeDatasource()
         val apiService = BikeAPIDataSource.getService()
         val sharedPrefs = getSharedPreferences("session", Context.MODE_PRIVATE)
@@ -37,19 +35,18 @@ class BikeListActivity : ComponentActivity() {
             val repository = BikeRepository(bikeDao, apiService)
             val useCase = BikeListUseCase(repository, token)
 
-            Log.d(TAG, "Creant viewModel Bike...")
+            Log.d(tag, "Creant viewModel Bike...")
 
-            viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            viewModel=ViewModelProvider(this, object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return BikeListViewModel(useCase) as T
                 }
             })[BikeListViewModel::class.java]
 
-            Log.d(TAG,"Before setContent Execution")
-
+            Log.d(tag,"Before setContent Execution")
             setContent {
                 PatinflyTheme {
-                    Surface(modifier = Modifier.fillMaxSize()) {
+                    Surface(modifier=Modifier.fillMaxSize()) {
                         BikeListScreen(
                             viewModel = viewModel,
                             onProfileClick = {
@@ -62,7 +59,7 @@ class BikeListActivity : ComponentActivity() {
                     }
                 }
             }
-            Log.d(TAG, "After setContent Execution")
+            Log.d(tag, "After setContent Execution")
         }
     }
     override fun onResume() {

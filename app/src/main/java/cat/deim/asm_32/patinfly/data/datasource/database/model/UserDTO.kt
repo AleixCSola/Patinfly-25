@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import cat.deim.asm_32.patinfly.domain.models.User
 import java.util.Date
-import java.util.UUID
 
 @Entity(tableName = "user")
 data class UserDTO(
@@ -27,7 +26,6 @@ data class UserDTO(
             deviceId = user.deviceId
         )
     }
-
     fun toDomain(): User = User(
         uuid = uuid,
         name = name,

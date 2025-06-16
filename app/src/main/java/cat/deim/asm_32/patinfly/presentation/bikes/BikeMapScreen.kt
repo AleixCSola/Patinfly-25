@@ -15,18 +15,17 @@ fun BikeMapScreen(
     lon: Double,
     modifier: Modifier = Modifier
 ) {
-    val position = LatLng(lat, lon)
-    val cameraPositionState = rememberCameraPositionState {
+    val position =LatLng(lat, lon)
+    val cameraPositionState= rememberCameraPositionState {
         this.position = CameraPosition(position, 15f, 0f, 0f)
     }
-
     GoogleMap(
         modifier = modifier,
         cameraPositionState = cameraPositionState
     ) {
         Marker(
             state = MarkerState(position = position),
-            title = "Ubicació de la bici"
+            title ="Ubicació de la bici"
         )
     }
 }

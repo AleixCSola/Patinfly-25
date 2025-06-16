@@ -3,9 +3,6 @@ package cat.deim.asm_32.patinfly.data.datasource.database.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import cat.deim.asm_32.patinfly.domain.models.Bike
-import cat.deim.asm_32.patinfly.domain.models.BikeType
-import androidx.room.TypeConverters
-import java.util.Date
 
 @Entity(tableName = "bike")
 data class BikeDTO(
@@ -45,7 +42,6 @@ data class BikeDTO(
             meters              = bike.meters*/
         )
     }
-
     fun toDomain(): Bike = Bike(
         uuid                = uuid,
         name                = name,
@@ -56,7 +52,6 @@ data class BikeDTO(
         lat                 = lat,
         lon                 = lon,
         userId              = userId
-
         /*creationDate        = creationDate,
         lastMaintenanceDate = lastMaintenanceDate,
         isActive            = isActive,

@@ -7,7 +7,6 @@ data class BikesResponse(
         @SerializedName("vehicles") val vehicles: List<Vehicle>,
         @SerializedName("version") val version: String
 )
-
 data class Vehicle(
         @SerializedName("name") val name: String,
         @SerializedName("is_disabled") val isDisabled: Boolean,
@@ -21,12 +20,10 @@ data class Vehicle(
         @SerializedName("vehicle_type_id") val vehicleTypeId: String,
         @SerializedName("group_course") val groupCourse: String
 )
-
 data class RentalUris(
         @SerializedName("android") val android: String,
         @SerializedName("ios") val ios: String
 )
-
 fun List<Vehicle>.toDomain(): List<Bike> {
         return this.map { vehicle ->
                 Bike(

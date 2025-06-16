@@ -19,42 +19,35 @@ class BikeRentDetailViewModel(
     private val pricingPlanRepository: ISystemPricingPlanRepository,
     private val updateBikeUseCase: UpdateBikeUseCase
 ) : ViewModel() {
-
     private val _rentToggled = MutableStateFlow<Boolean?>(null)
     val rentToggled: StateFlow<Boolean?> = _rentToggled
-
     val isLoading = MutableStateFlow(false)
     private val _isRentedByUser = MutableStateFlow(false)
     val isRentedByUser: StateFlow<Boolean> = _isRentedByUser
-
     private val _bike = MutableStateFlow<Bike?>(null)
     val bike: StateFlow<Bike?> = _bike
-
     private val _pricingPlan = MutableStateFlow<SystemPricingPlan?>(null)
     val pricingPlan: StateFlow<SystemPricingPlan?> = _pricingPlan
-
     init {
         viewModelScope.launch {
-            _isRentedByUser.value = rentUseCase.isBikeRentedByUser(bikeUuid, userId)
-            _bike.value = rentUseCase.getBikeById(bikeUuid)
-            _pricingPlan.value = rentUseCase.getPricingPlan()
+            _isRentedByUser.value =rentUseCase.isBikeRentedByUser(bikeUuid, userId)
+            _bike.value =rentUseCase.getBikeById(bikeUuid)
+            _pricingPlan.value= rentUseCase.getPricingPlan()
         }
     }
-
     fun toggleRent() {
         viewModelScope.launch {
-            isLoading.value = true
-            val result = rentUseCase.toggleRent(bikeUuid, userId)
-            _rentToggled.value = result
-            _isRentedByUser.value = result == true
-            isLoading.value = false
+            isLoading.value =true
+            val result=rentUseCase.toggleRent(bikeUuid, userId)
+            _rentToggled.value=result
+            _isRentedByUser.value =result ==true
+            isLoading.value =false
         }
     }
 }
-
 class BikeRentDetailViewModelFactory(
     private val bikeUuid: String,
-    private val userId: String,
+    private val userId:String,
     private val rentUseCase: BikeRentDetailUseCase,
     private val pricingPlanRepository: ISystemPricingPlanRepository,
     private val updateBikeUseCase: UpdateBikeUseCase

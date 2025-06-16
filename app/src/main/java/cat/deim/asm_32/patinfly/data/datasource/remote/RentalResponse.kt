@@ -9,7 +9,6 @@ data class RentalResponse(
     @SerializedName("start_time") val startTime: String,
     @SerializedName("end_time") val endTime: String
 )
-
 data class VehicleRent(
     @SerializedName("vehicle_id") val vehicleId: String,
     @SerializedName("vehicle_type_id") val vehicleTypeId: String,
@@ -17,7 +16,6 @@ data class VehicleRent(
     @SerializedName("lat") val lat: Double,
     @SerializedName("lon") val lon: Double
 )
-
 data class User(
     @SerializedName("uuid") val userId: String,
     @SerializedName("fullname") val fullname: String,

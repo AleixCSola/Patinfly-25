@@ -48,15 +48,12 @@ fun BikeRentDetailScreen(viewModel: BikeRentDetailViewModel) {
     val isRentedByUser by viewModel.isRentedByUser.collectAsState()
     val bike by viewModel.bike.collectAsState()
     val pricingPlan by viewModel.pricingPlan.collectAsState()
-
     val context = LocalContext.current
     val activity = context as? Activity
-
     LaunchedEffect(rentToggled) {
-        if (rentToggled == true) {
+        if (rentToggled==true) {
             Toast.makeText(context, "Acció completada", Toast.LENGTH_SHORT).show()
             delay(500)
-
             activity?.finish()
 
             val intent = Intent(context, MainActivity::class.java).apply {

@@ -1,3 +1,5 @@
+package cat.deim.asm_32.patinfly.data.datasource.remote
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,7 +18,6 @@ data class Token(
     @SerialName(value = "expires_refresh")
     val expiresRefresh: String
 )
-
 @Serializable
 data class LoginResponse(
     @SerialName(value = "success")

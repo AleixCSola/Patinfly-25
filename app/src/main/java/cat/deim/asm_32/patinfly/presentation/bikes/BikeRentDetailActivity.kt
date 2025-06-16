@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import cat.deim.asm_32.patinfly.data.datasource.database.AppDatabase
 import cat.deim.asm_32.patinfly.data.datasource.local.SystemPricingPlanDataSource
@@ -24,12 +23,10 @@ class BikeRentDetailActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val bikeUuid = intent.getStringExtra("bike_uuid") ?: ""
         val sharedPrefs = getSharedPreferences("session", Context.MODE_PRIVATE)
         val token = sharedPrefs.getString("token", null) ?: ""
         val userUuid = sharedPrefs.getString("uuid", null) ?: ""
-
         val db = AppDatabase.getDatabase(applicationContext)
         val bikeDao = db.bikeDatasource()
         val planDao = db.systemPricingPlanDatasource()
@@ -40,11 +37,8 @@ class BikeRentDetailActivity : ComponentActivity() {
 
         val rentUseCase = BikeRentDetailUseCase(repository, systemPricingPlanRepository, token)
         val updateBikeUseCase = UpdateBikeUseCase(repository, token)
-
         val factory = BikeRentDetailViewModelFactory(bikeUuid, userUuid, rentUseCase, systemPricingPlanRepository, updateBikeUseCase)
-
         viewModel = ViewModelProvider(this, factory)[BikeRentDetailViewModel::class.java]
-
         setContent {
             PatinflyTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {

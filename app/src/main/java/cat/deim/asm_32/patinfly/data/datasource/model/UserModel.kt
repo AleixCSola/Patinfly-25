@@ -26,7 +26,6 @@ data class UserModel(
         lastConnection=this.lastConnection,
         deviceId=this.deviceId
         )
-
     companion object{
         fun fromDomain(user: User): UserModel=UserModel(
             uuid=user.uuid,

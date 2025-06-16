@@ -10,29 +10,25 @@ import retrofit2.converter.gson.GsonConverterFactory
 class BikeAPIDataSource private constructor() {
 
     private var context: Context? = null
-
     companion object {
         private const val BASE_URL = "https://api.patinfly.dev/api/"
         private lateinit var retrofit: APIService
-
         @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: BikeAPIDataSource? = null
-
         fun getInstance(context: Context)=
             instance ?: synchronized(this) {
                 instance ?: BikeAPIDataSource().also {
                     instance = it
-                    it.context = context
-                    val logging = HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
+                    it.context=context
+                    val logging=HttpLoggingInterceptor().apply {
+                        level=HttpLoggingInterceptor.Level.BODY
                     }
 
-                    val client = OkHttpClient.Builder()
+                    val client=OkHttpClient.Builder()
                         .addInterceptor(logging)
                         .build()
-
-                    retrofit = Retrofit.Builder()
+                    retrofit=Retrofit.Builder()
                         .baseUrl(BASE_URL)
                         .client(client)
                         .addConverterFactory(GsonConverterFactory.create())
@@ -40,7 +36,6 @@ class BikeAPIDataSource private constructor() {
                         .create(APIService::class.java)
                 }
             }
-
         fun getService(): APIService = retrofit
     }
 }

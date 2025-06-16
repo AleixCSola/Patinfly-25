@@ -3,6 +3,7 @@ package cat.deim.asm_32.patinfly.data.datasource.local
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import cat.deim.asm_32.patinfly.R
 import cat.deim.asm_32.patinfly.data.datasource.ISystemPricingPlanDataSource
 import cat.deim.asm_32.patinfly.data.datasource.model.DataModel
 import cat.deim.asm_32.patinfly.data.datasource.model.SystemPricingPlanModel
@@ -12,7 +13,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 
 class SystemPricingPlanDataSource private constructor(): ISystemPricingPlanDataSource {
-
     companion object {
         @SuppressLint("StaticFieldLeak")
         @Volatile
@@ -25,12 +25,11 @@ class SystemPricingPlanDataSource private constructor(): ISystemPricingPlanDataS
                 }
             }
     }
-
     private var pricingPlan:SystemPricingPlanModel?=null
     private var context:Context?=null
     fun loadPricingData() {
         try {
-            context?.assets?.open("systems_pricing_plans.json").use { inputStream ->
+            context?.resources?.openRawResource(R.raw.systems_pricing_plans)?.use { inputStream ->
                 InputStreamReader(inputStream).use { reader ->
                     val json = reader.readText()
                     pricingPlan = parseJson(json)
@@ -67,7 +66,6 @@ class SystemPricingPlanDataSource private constructor(): ISystemPricingPlanDataS
         pricingPlan=plan
         return antic
     }
-
     override fun delete(planId: String): Boolean {
         /*return if (pricingPlan?.dataPlan?.planId == planId) {
             pricingPlan = null

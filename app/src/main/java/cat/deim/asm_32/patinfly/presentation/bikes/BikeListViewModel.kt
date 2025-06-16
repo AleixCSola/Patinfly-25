@@ -11,14 +11,11 @@ import kotlinx.coroutines.launch
 class BikeListViewModel(
     private val useCase: BikeListUseCase
 ) : ViewModel() {
-
     private val bicis = MutableStateFlow<List<Bike>>(emptyList())
     val bikes: StateFlow<List<Bike>> = bicis
-
     init {
         loadBikes()
     }
-
     fun loadBikes() {
         viewModelScope.launch {
             bicis.value = useCase.execute()

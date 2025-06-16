@@ -16,15 +16,12 @@ class LoginUseCase(
         return try {
             Log.d("LoginUseCase", "Intentando login con email: ${credentials.email}, password: ${credentials.password}")
             val loginResponse = apiService.login(credentials.email, credentials.password)
-
             if (loginResponse.success) {
                 val token = loginResponse.token
-                val sharedPrefs = context.getSharedPreferences("session", Context.MODE_PRIVATE)
+                val sharedPrefs=context.getSharedPreferences("session", Context.MODE_PRIVATE)
                 sharedPrefs.edit().putString("token", token.access).apply()
-
                 val userData = apiService.getUser(token.access)
                 sharedPrefs.edit().putString("uuid", userData.uuid).apply()
-
                 val now = Date()
                 val domainUser = User(
                     uuid = userData.uuid,
@@ -32,7 +29,7 @@ class LoginUseCase(
                     email = userData.email,
                     hashedPassword = credentials.password,
                     creationDate = now,
-                    lastConnection = now,
+                    lastConnection=now,
                     deviceId = "1"
                 )
 

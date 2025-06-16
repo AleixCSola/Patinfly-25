@@ -2,6 +2,7 @@ package cat.deim.asm_32.patinfly.data.datasource.local
 
 import android.annotation.SuppressLint
 import android.content.Context
+import cat.deim.asm_32.patinfly.R
 import cat.deim.asm_32.patinfly.data.datasource.IUserDataSource
 import cat.deim.asm_32.patinfly.data.datasource.model.UserModel
 import com.google.gson.GsonBuilder
@@ -28,7 +29,7 @@ class UserLocalDataSource private constructor():IUserDataSource {
     private var context:Context?=null
     fun loadUserData() {
         try {
-            context?.assets?.open("user.json").use { inputStream ->
+            context?.resources?.openRawResource(R.raw.user).use { inputStream ->
                 InputStreamReader(inputStream).use { reader ->
                     val json = reader.readText()
                     mUserModel = parseJson(json)

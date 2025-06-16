@@ -10,7 +10,6 @@ data class SystemPricingPlanDTO(
     val lastUpdated: String,
     val ttl: String,
     val version: String,
-
     val nameText: String,
     val nameLanguage: String,
     val currency: String,
@@ -18,11 +17,9 @@ data class SystemPricingPlanDTO(
     val isTaxable: Boolean,
     val descriptionText: String,
     val descriptionLanguage: String,
-
     val perKmStart: Double,
     val perKmRate: Double,
     val perKmInterval: Double,
-
     val perMinStart: Double,
     val perMinRate: Double,
     val perMinInterval: Double
@@ -42,7 +39,6 @@ data class SystemPricingPlanDTO(
             perMinPricing = PerMinPricing(perMinStart, perMinRate, perMinInterval)
         )
     )
-
     companion object {
         fun fromDomain(plan: SystemPricingPlan): SystemPricingPlanDTO {
             val info = plan.dataPlan

@@ -3,10 +3,8 @@ package cat.deim.asm_32.patinfly.presentation.profile
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,13 +29,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(usuari: User, rentalHistory: List<RentalResponse>) {
-    val context = LocalContext.current
-    val currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-    val scrollState = rememberScrollState()
-
+fun ProfileScreen(usuari: User, rentalHistory:List<RentalResponse>) {
+    val context =LocalContext.current
+    val currentDateTime= LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     Scaffold(
-        topBar = {
+        topBar={
             TopAppBar(
                 title = { Text(stringResource(R.string.profile)) },
                 navigationIcon = {
@@ -54,7 +50,7 @@ fun ProfileScreen(usuari: User, rentalHistory: List<RentalResponse>) {
         }
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier
+            modifier=Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(dimensionResource(R.dimen.padding_medium))

@@ -12,11 +12,9 @@ import androidx.room.RoomDatabase
 @TypeConverters(Converters::class)
 
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun userDatasource(): UserDatasource
     abstract fun bikeDatasource(): BikeDatasource
     abstract fun systemPricingPlanDatasource(): SystemPricingPlanDatasource
-
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null

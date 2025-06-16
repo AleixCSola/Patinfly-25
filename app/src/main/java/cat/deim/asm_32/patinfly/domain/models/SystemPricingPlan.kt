@@ -6,7 +6,6 @@ data class SystemPricingPlan(
     val version: String,
     val dataPlan: Information
 )
-
 data class Information(
     val planId: String,
     val name: TextType,
@@ -15,7 +14,7 @@ data class Information(
     val isTaxable: Boolean,
     val description: TextType,
     val perKmPricing: PerKmPricing,
-    val perMinPricing: PerMinPricing
+    val perMinPricing:PerMinPricing
 )
 data class TextType(
     val text: String,

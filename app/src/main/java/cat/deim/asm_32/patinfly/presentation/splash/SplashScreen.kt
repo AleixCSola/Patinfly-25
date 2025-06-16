@@ -16,11 +16,9 @@ import cat.deim.asm_32.patinfly.R
 import cat.deim.asm_32.patinfly.presentation.login.LoginActivity
 import cat.deim.asm_32.patinfly.ui.theme.Nunito
 import kotlinx.coroutines.delay
-
 @Composable
 fun SplashScreen() {
     val context = LocalContext.current
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primary
@@ -32,8 +30,8 @@ fun SplashScreen() {
             Text(
                 text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.displayLarge.copy(
-                    fontFamily = Nunito,
-                    fontWeight = FontWeight.Bold
+                    fontFamily =Nunito,
+                    fontWeight =FontWeight.Bold
                 ),
                 color = MaterialTheme.colorScheme.onPrimary
             )
@@ -49,7 +47,7 @@ fun SplashScreen() {
     }
     LaunchedEffect(Unit) {
         delay(2000)
-        context.startActivity(Intent(context, LoginActivity::class.java))
+        context.startActivity(Intent(context,LoginActivity::class.java))
         (context as Activity).finish()
     }
 }
